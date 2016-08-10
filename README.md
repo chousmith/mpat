@@ -1,7 +1,7 @@
-phantomjs-webserver
-===================
+phantomjs-webserver-example
+===========================
 
-Example of using phantomjs webserver module
+Example of using phantomjs webserver module, based off of https://github.com/benfoxall/phantomjs-webserver-example
 
 ## Running
 
