@@ -20,3 +20,4 @@ heroku create --stack cedar --buildpack http://github.com/stomita/heroku-buildpa
 # deploy
 git push heroku master
 ```
+![heroku screenshot](https://raw.github.com/chousmith/phantomjs-webserver-example/master/screenshot.png)
