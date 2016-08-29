@@ -1,9 +1,17 @@
-phantomjs-webserver-example
-===========================
+ninthlink marketing plumbing analysis tool (nlkmpat)
+====================================================
 
-Example of using phantomjs webserver module, based off of https://github.com/benfoxall/phantomjs-webserver-example
+Analyze the marketing plumbing of a URL using phantomjs webserver module. Originally based off of https://github.com/benfoxall/phantomjs-webserver-example
 
 ## Running
+
+### Heroku
+
+https://nlkmpat-dev.herokuapp.com/
+
+![heroku screenshot](https://raw.github.com/chousmith/phantomjs-webserver-example/master/screenshot.png)
+
+### Command line via phantomjs
 
 ```bash
 phantomjs server.js
@@ -20,4 +28,5 @@ heroku create --stack cedar --buildpack http://github.com/stomita/heroku-buildpa
 # deploy
 git push heroku master
 ```
-![heroku screenshot](https://raw.github.com/chousmith/phantomjs-webserver-example/master/screenshot.png)
+
+and then?
