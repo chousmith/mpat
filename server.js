@@ -46,6 +46,7 @@ function request_page(url, callback){
 			return document.title
 		});
 
+		// populate links array
 		properties.links = page.evaluate(function () {
 			return Object.keys(
 					[].reduce.call(
@@ -58,6 +59,7 @@ function request_page(url, callback){
 				)
 		});
 
+		// calculate link areas
 		properties.link_areas = page.evaluate(function () {
 			var sizes = [].reduce.call(document.querySelectorAll('a'), function(memo, a){
 				var bb = a.getBoundingClientRect(),
@@ -75,7 +77,7 @@ function request_page(url, callback){
 			return Object.keys(sizes).map(function(url){
 				return [url, sizes[url]];
 			});
-		})
+		});
 
 		setTimeout(function(){
 			var imageuri = 'data:image/png;base64,' + page.renderBase64('png');
