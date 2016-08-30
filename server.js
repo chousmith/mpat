@@ -10,8 +10,8 @@ var service = server.listen(port, function(request, response) {
 
 		request_page(url, function(properties, imageuri){
 			response.statusCode = 200;
-			response.write(JSON.stringify(properties));	
-			response.write("\n");	
+			response.write(JSON.stringify(properties));
+			response.write("\n");
 			response.write(imageuri);
 			response.close();
 		})
@@ -30,8 +30,8 @@ if(service) console.log("server started - http://localhost:" + server.port);
 function request_page(url, callback){
 
 	var page = new WebPage();
-	page.clipRect = { top: 0, left: 0, width: 700, height: 400 };
-	page.viewportSize = { width: 700, height: 400 };
+	page.clipRect = { top: 0, left: 0, width: 1015, height: 580 };
+	page.viewportSize = { width: 1015, height: 580 };
 
 	page.onLoadStarted = function () {
 		console.log('loading:' + url);
@@ -49,7 +49,7 @@ function request_page(url, callback){
 		properties.links = page.evaluate(function () {
 			return Object.keys(
 					[].reduce.call(
-						document.querySelectorAll('a'), 
+						document.querySelectorAll('a'),
 						function(memo, a){
 							if(a.protocol.indexOf('http') === 0) memo[a.href] = true;
 							return memo;
@@ -63,12 +63,12 @@ function request_page(url, callback){
 				var bb = a.getBoundingClientRect(),
 					area = bb.width * bb.height,
 					href = a.getAttribute('href');
-			 
+
 				// update the map
 				if(area){
 					memo[href] = (memo[href] || 0) + area;
 				}
-			 
+
 				return memo;
 			},{});
 
