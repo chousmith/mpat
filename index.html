@@ -91,15 +91,18 @@
 				</div>
 				</div>
 				<div class="panel panel-default">
-				<div class="panel-heading">Links found on the page</div>
-				<div class="panel-body">
-					<p>Click on a link below to analyze the marketing plumbing on that page next.</p>
-			  </div>
+				<div class="panel-heading">Links Found on the Page {{#if meta.links}}<abbr title="Click on a link below to analyze the marketing plumbing on that page next."><i class="fa fa-question-circle"></i></abbr>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</div>
+				{{#if meta.links}}
 				<div class="list-group">
 					{{#each meta.links}}
-						<a href="{{this}}" class="list-group-item">{{this}}</a>
+						<a href="{{this}}" class="list-group-item" title="Click to analyze">{{this}}</a>
 					{{/each}}
 				</div>
+				{{else}}
+				<div class="panel-body">
+					<p>No links found.</p>
+			  </div>
+				{{/if}}
 			</div>
 			<div class="well">
 				<div class="pie-chart"></div>
@@ -150,6 +153,7 @@
 					var parts = response.split("\n");
 					data.imgsrc = parts[1]
 					data.meta = $.parseJSON(parts[0]);
+
 					data.loading = false;
 					if ( params[0]['name'] == 'url' ) {
 						data.url = params[0]['value'];
@@ -160,9 +164,12 @@
 					// console.log(data);
 					$el.html(template(data));
 
-					if(chartsLoaded){
+					if ( chartsLoaded ) {
 
-						data.meta.link_areas.unshift(['URL', 'Area'])
+						data.meta.link_areas.unshift(['URL', 'Area']);
+
+						// console.log('link areas to chart :');
+						// console.log(data.meta.link_areas);
 
 						var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
 
