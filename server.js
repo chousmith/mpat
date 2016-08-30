@@ -10,7 +10,7 @@ var server = require('webserver').create(),
 	// if the page hasn't loaded yet, something is probably wrong
 	MAX_EXECUTION_TIME = 15000,
 	// whether to output extra robust logging or not, really
-	DEBUG = true;
+	DEBUG = false;
 
 // a list of regular expressions of resources (urls) to log when we load them
 var resources_to_log = [
