@@ -190,8 +190,12 @@
 
 		$(document).on('click','div a', function(e){
 			e.preventDefault();
-			$('input[name=url]').val(this.href).submit();
-			$('body').animate({scrollTop:0});
+			if ( this.href.substr(0,4) == 'tel:' ) {
+				alert('oops! running on telephone numbers is not supported ... at this time?');
+			} else {
+				$('input[name=url]').val(this.href).submit();
+				$('body').animate({scrollTop:0});
+			}
 		});
 	</script>
 

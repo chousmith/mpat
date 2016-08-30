@@ -52,7 +52,9 @@ function request_page(url, callback){
 					[].reduce.call(
 						document.querySelectorAll('a'),
 						function(memo, a){
-							if(a.protocol.indexOf('http') === 0) memo[a.href] = true;
+							if ( ( a.protocol.indexOf('http') === 0 ) || ( a.protocol.indexOf('tel') === 0) ) {
+								memo[a.href] = true;
+							}
 							return memo;
 						}
 					,{})
