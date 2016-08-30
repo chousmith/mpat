@@ -283,7 +283,7 @@ function request_page(url, callback){
 									console.log( emsg );
 									resource_errors.unshift( emsg );
 								} else {
-									resource_checks[3]['value'] = resources_summary[i][1].length;
+									resource_checks[3]['value'] = '... something ...'; //resources_summary[i][1].length;
 								}
 							  break;
 		          case 'font':
