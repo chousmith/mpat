@@ -79,7 +79,8 @@ function request_page(url, callback){
 	  ['font', []]
 	];
 	var resources_summary_key = {};
-	var resource_checks = {fb: '', gtm: '', ga: '', hotjar: '', vwo: ''};
+	var resource_checks = [{ name: 'Google Tag Manager (GTM)' }, { name: 'Google Analytics (GA)' }, { name: 'Hotjar' }, { name: 'Facebook Pixel' }, { name: 'Visual Website Optimizer (VWO)' }];
+	var resource_errors = [];
 	// dynamically generate our quick key store hash something
 	var l = resources_summary.length;
 	while(l--) {
@@ -172,6 +173,7 @@ function request_page(url, callback){
 		        console.log('resources_summary_key ::' + JSON.stringify(resources_summary_key));
 		      }
 
+					var emsg = '';
 		      for( var i in resources_summary ) {
 		        if ( DEBUG ) {
 		          console.log('* '+ resources_summary[i][0] + ' : '+ resources_summary[i][1].length );
@@ -179,7 +181,9 @@ function request_page(url, callback){
 		        switch ( resources_summary[i][0] ) {
 		          case 'gtm':
 		            if ( resources_summary[i][1].length == 0 ) {
-		              console.log('No Google Tag Manager found?');
+		              emsg = 'No Google Tag Manager found?';
+									console.log( emsg );
+									resource_errors.unshift( emsg );
 		            } else {
 		              for ( var s in resources_summary[i][1] ) {
 		                if ( DEBUG ) {
@@ -189,14 +193,16 @@ function request_page(url, callback){
 		                var gtmd = resources_summary[i][1][s].substr( 43 );
 		                // do we care about extra args there?
 		                console.log('Google Tag Manager found, with '+ gtmd );
-										resource_checks[ resources_summary[i][0] ] = gtmd;
+										resource_checks[0]['value'] = gtmd;
 		              }
 		            }
 		            //https://www.googletagmanager.com/gtm.js?id=GTM-PGQC7X
 		            break;
 		          case 'ga':
 		            if ( resources_summary[i][1].length == 0 ) {
-		              console.log('No Google Analytics found?');
+		              emsg = 'No Google Analytics found?';
+									console.log( emsg );
+									resource_errors.unshift( emsg );
 		            } else {
 		              for ( var s in resources_summary[i][1] ) {
 		                if ( DEBUG ) {
@@ -209,14 +215,16 @@ function request_page(url, callback){
 		                  nextt = resources_summary[i][1][s].substr( tidat, nextt - tidat );
 											nextt = nextt.substr(5);
 		                  console.log('Google Analytics found, with '+ nextt );
-											resource_checks[ resources_summary[i][0] ] = nextt;
+											resource_checks[1]['value'] = nextt;
 		                }
 		              }
 		            }
 		            break;
 		          case 'hotjar':
 		            if ( resources_summary[i][1].length == 0 ) {
-		              console.log('No Hotjar found?');
+		              emsg = 'No Hotjar found?';
+									console.log( emsg );
+									resource_errors.unshift( emsg );
 		            } else {
 		              for ( var s in resources_summary[i][1] ) {
 		                if ( DEBUG ) {
@@ -226,14 +234,16 @@ function request_page(url, callback){
 		                  var jsat = resources_summary[i][1][s].indexOf('.js');
 											jsat = resources_summary[i][1][s].substr( 35, jsat - 35 );
 		                  console.log('Hotjar found, with ID = '+ jsat );
-											resource_checks[ resources_summary[i][0] ] = jsat;
+											resource_checks[2]['value'] = jsat;
 		                }
 		              }
 		            }
 		            break;
 		          case 'vwo':
 		            if ( resources_summary[i][1].length == 0 ) {
-		              console.log('No Visual Website Optimizer found?');
+		              emsg = 'No Visual Website Optimizer found?';
+									console.log( emsg );
+									resource_errors.unshift( emsg );
 		            } else {
 		              for ( var s in resources_summary[i][1] ) {
 		                if ( DEBUG ) {
@@ -253,7 +263,7 @@ function request_page(url, callback){
 		                      aat = aat.substr(0, jpat);
 		                    }
 		                    console.log('Visual Website Optimizer found, with ID = '+ aat );
-												resource_checks[ resources_summary[i][0] ] = aat;
+												resource_checks[4]['value'] = aat;
 		                  }
 		                }
 		              }
@@ -268,7 +278,13 @@ function request_page(url, callback){
 		                }
 		              }
 		            }
-								resource_checks[ resources_summary[i][0] ] = resources_summary[i][1].length;
+								if ( resources_summary[i][1].length == 0 ) {
+									emsg = 'No Facebook found?';
+									console.log( emsg );
+									resource_errors.unshift( emsg );
+								} else {
+									resource_checks[3]['value'] = resources_summary[i][1].length;
+								}
 							  break;
 		          case 'font':
 		            console.log( resources_summary[i][1].length +' '+ resources_summary[i][0] +' file'+ ( resources_summary[i][1].length > 1 ? 's' : '' ) );
@@ -290,8 +306,8 @@ function request_page(url, callback){
 		        }
 		      }
 
-					properties.resources = resource_checks;
-					properties.resources_summary = resources_summary;
+					properties.resources = { checks: resource_checks, errors: resource_errors };
+					//properties.resources_summary = resources_summary;
 
 					var imageuri = 'data:image/png;base64,' + page.renderBase64('png');
 

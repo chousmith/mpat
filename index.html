@@ -86,10 +86,10 @@
 				<h3>Page Title: {{meta.title}}</h3>
 				<div class="panel panel-default">
 				<div class="panel-heading">Marketing Plumbing Checks</div>
-				{{#if meta.resources}}
+				{{#if meta.resources.checks}}
 				<ul class="list-group">
-					{{#each meta.resources}}
-					<li class="list-group-item"><abbr title="{{this}}">...</abbr></li>
+					{{#each meta.resources.checks}}
+					<li class="list-group-item"><strong>{{name}}</strong>: {{#if value}}Found with ID = {{value}}{{else}}Not found?{{/if}}</li>
 					{{/each}}
 				</ul>
 				{{else}}
