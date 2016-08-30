@@ -30,24 +30,6 @@ var resources_to_log = [
   [ new RegExp('^https://www.googletagmanager.com*'), 'gtm' ]
 ];
 
-var resources_summary = [
-  ['gtm', []],
-  ['ga', []],
-  ['hotjar', []],
-  ['vwo', []],
-  ['fb', []],
-  ['css', []],
-  ['js', []],
-  ['img', []],
-  ['font', []]
-];
-var resources_summary_key = {};
-// dynamically generate our quick key store hash something
-var l = resources_summary.length;
-while(l--) {
-  resources_summary_key[resources_summary[l][0]] = l;
-}
-
 var service = server.listen(port, function(request, response) {
 
 	if(request.method == 'POST' && request.post.url){
@@ -83,6 +65,26 @@ function request_page(url, callback){
 
 	// reset our firedonce catch
 	firedonce = false;
+
+	// reset our resources?
+	var resources_summary = [
+	  ['gtm', []],
+	  ['ga', []],
+	  ['hotjar', []],
+	  ['vwo', []],
+	  ['fb', []],
+	  ['css', []],
+	  ['js', []],
+	  ['img', []],
+	  ['font', []]
+	];
+	var resources_summary_key = {};
+	var resource_checks = {fb: '', gtm: '', ga: '', hotjar: '', vwo: ''};
+	// dynamically generate our quick key store hash something
+	var l = resources_summary.length;
+	while(l--) {
+	  resources_summary_key[resources_summary[l][0]] = l;
+	}
 
 	// create a function that is called every time a resource is requested
 	// http://phantomjs.org/api/webpage/handler/on-resource-requested.html
@@ -187,6 +189,7 @@ function request_page(url, callback){
 		                var gtmd = resources_summary[i][1][s].substr( 43 );
 		                // do we care about extra args there?
 		                console.log('Google Tag Manager found, with '+ gtmd );
+										resource_checks[ resources_summary[i][0] ] = gtmd;
 		              }
 		            }
 		            //https://www.googletagmanager.com/gtm.js?id=GTM-PGQC7X
@@ -204,7 +207,9 @@ function request_page(url, callback){
 		                if ( tidat > 0 ) {
 		                  var nextt = resources_summary[i][1][s].indexOf('&', tidat + 1);
 		                  nextt = resources_summary[i][1][s].substr( tidat, nextt - tidat );
-		                  console.log('Google Analytics found, with '+ nextt.substr(5) );
+											nextt = nextt.substr(5);
+		                  console.log('Google Analytics found, with '+ nextt );
+											resource_checks[ resources_summary[i][0] ] = nextt;
 		                }
 		              }
 		            }
@@ -219,7 +224,9 @@ function request_page(url, callback){
 		                }
 		                if ( resources_summary[i][1][s].substr(0, 35) == 'https://static.hotjar.com/c/hotjar-' ) {
 		                  var jsat = resources_summary[i][1][s].indexOf('.js');
-		                  console.log('Hotjar found, with ID = '+ resources_summary[i][1][s].substr( 35, jsat - 35 ) );
+											jsat = resources_summary[i][1][s].substr( 35, jsat - 35 );
+		                  console.log('Hotjar found, with ID = '+ jsat );
+											resource_checks[ resources_summary[i][0] ] = jsat;
 		                }
 		              }
 		            }
@@ -246,11 +253,23 @@ function request_page(url, callback){
 		                      aat = aat.substr(0, jpat);
 		                    }
 		                    console.log('Visual Website Optimizer found, with ID = '+ aat );
+												resource_checks[ resources_summary[i][0] ] = aat;
 		                  }
 		                }
 		              }
 		            }
 		            break;
+							case 'fb':
+		            console.log( resources_summary[i][1].length +' '+ resources_summary[i][0] +' file'+ ( resources_summary[i][1].length > 1 ? 's' : '' ) );
+		            if ( DEBUG ) {
+		              if ( resources_summary[i][1].length > 0 ) {
+		                for ( var s in resources_summary[i][1] ) {
+		                  console.log( resources_summary[i][1][s] )
+		                }
+		              }
+		            }
+								resource_checks[ resources_summary[i][0] ] = resources_summary[i][1].length;
+							  break;
 		          case 'font':
 		            console.log( resources_summary[i][1].length +' '+ resources_summary[i][0] +' file'+ ( resources_summary[i][1].length > 1 ? 's' : '' ) );
 		            if ( DEBUG ) {
@@ -260,16 +279,19 @@ function request_page(url, callback){
 		                }
 		              }
 		            }
+								// resource_checks[ resources_summary[i][0] ] = resources_summary[i][1].length;
 		            break;
 		          default:
 		            //if ( ! DEBUG ) {
 		            console.log( resources_summary[i][1].length +' '+ resources_summary[i][0] +' file'+ ( resources_summary[i][1].length > 1 ? 's' : '' ) );
+								// resource_checks[ resources_summary[i][0] ] = resources_summary[i][1].length;
 		            //}
 		            break;
 		        }
 		      }
 
-					properties.resources = resources_summary;
+					properties.resources = resource_checks;
+					properties.resources_summary = resources_summary;
 
 					var imageuri = 'data:image/png;base64,' + page.renderBase64('png');
 
