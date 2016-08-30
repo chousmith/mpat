@@ -85,7 +85,7 @@
 			{{#if meta}}
 				<h3>Page Title: {{meta.title}}</h3>
 				<div class="panel panel-{{errorlevel}}">
-				<div class="panel-heading">Marketing Plumbing Checks{{#if errorcount}} <span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{/if}}</div>
+				<div class="panel-heading">Marketing Plumbing Checks {{#if errorcount}}<span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{else}}<span class="label label-success">Hooray!</span>{{/if}}</div>
 				{{#if meta.resources.checks}}
 				<ul class="list-group">
 					{{#each meta.resources.checks}}

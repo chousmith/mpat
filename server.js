@@ -10,7 +10,7 @@ var server = require('webserver').create(),
 	// if the page hasn't loaded yet, something is probably wrong
 	MAX_EXECUTION_TIME = 15000,
 	// whether to output extra robust logging or not, really
-	DEBUG = false;
+	DEBUG = true;
 
 // a list of regular expressions of resources (urls) to log when we load them
 var resources_to_log = [
@@ -23,10 +23,13 @@ var resources_to_log = [
   [ new RegExp('.js'), 'js' ],
   [ new RegExp('.css'), 'css' ],
   [ new RegExp('^https://www.facebook.com/tr/*'), 'fb' ],
+  [ new RegExp('^http://dev.visualwebsiteoptimizer.com*'), 'vwo' ],
   [ new RegExp('^https://dev.visualwebsiteoptimizer.com*'), 'vwo' ],
+  [ new RegExp('^http://static.hotjar.com/c/hotjar*'), 'hotjar' ],
   [ new RegExp('^https://static.hotjar.com/c/hotjar*'), 'hotjar' ],
   [ new RegExp('^http(s)?://(www|ssl)\.google-analytics\.com.*'), 'ga' ],
   [ new RegExp('^http(s)?://stats\.g\.doubleclick\.net.*'), 'ga' ],
+  [ new RegExp('^http://www.googletagmanager.com*'), 'gtm' ],
   [ new RegExp('^https://www.googletagmanager.com*'), 'gtm' ]
 ];
 
@@ -190,7 +193,8 @@ function request_page(url, callback){
 		                  console.log( resources_summary[i][1][s] );
 		                }
 		                // search each for an id
-		                var gtmd = resources_summary[i][1][s].substr( 43 );
+		                var gtmd = resources_summary[i][1][s];
+										gtmd = gtmd.substr( gtmd.lastIndexOf('-') + 1 );
 		                // do we care about extra args there?
 		                console.log('Google Tag Manager found, with '+ gtmd );
 										resource_checks[0]['value'] = gtmd;
@@ -233,6 +237,11 @@ function request_page(url, callback){
 		                if ( resources_summary[i][1][s].substr(0, 35) == 'https://static.hotjar.com/c/hotjar-' ) {
 		                  var jsat = resources_summary[i][1][s].indexOf('.js');
 											jsat = resources_summary[i][1][s].substr( 35, jsat - 35 );
+		                  console.log('Hotjar found, with ID = '+ jsat );
+											resource_checks[2]['value'] = jsat;
+		                } else if ( resources_summary[i][1][s].substr(0, 34) == 'http://static.hotjar.com/c/hotjar-' ) {
+		                  var jsat = resources_summary[i][1][s].indexOf('.js');
+											jsat = resources_summary[i][1][s].substr( 34, jsat - 34 );
 		                  console.log('Hotjar found, with ID = '+ jsat );
 											resource_checks[2]['value'] = jsat;
 		                }
