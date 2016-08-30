@@ -69,12 +69,19 @@
 	{{else}}
 	<div class="col-md-6">
 			{{#if imgsrc}}
+				{{#if url}}
+				<a href="{{url}}" target="_blank" rel="nofollow">
+					{{/if}}
 				<img src="{{imgsrc}}" class="img-responsive img-thumbnail" />
+					{{#if url}}
+				</a>
+						{{/if}}
 			{{/if}}
 		</div>
 		<div class="col-md-6">
-		<h2>{{#each params}}{{name}}: {{value}}{{/each}}</h2>
-
+			{{#if url}}
+		<h2>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a></h2>
+			{{/if}}
 			{{#if meta}}
 				<h3>Page Title: {{meta.title}}</h3>
 				<div class="panel panel-default">
@@ -144,6 +151,11 @@
 					data.imgsrc = parts[1]
 					data.meta = $.parseJSON(parts[0]);
 					data.loading = false;
+					if ( params[0]['name'] == 'url' ) {
+						data.url = params[0]['value'];
+					} else {
+						data.url = '';
+					}
 					// console.log('reload?');
 					// console.log(data);
 					$el.html(template(data));
