@@ -78,7 +78,7 @@
 		</div>
 		<div class="col-md-6">
 			{{#if url}}
-		<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a></h4>
+		<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}<small> <i class="fa fa-external-link"></i></small></a></h4>
 			{{/if}}
 			{{#if meta}}
 				<h4>Page Title: {{meta.title}}</h4>
@@ -87,7 +87,13 @@
 				{{#if meta.resources.checks}}
 				<ul class="list-group">
 					{{#each meta.resources.checks}}
-					<li class="list-group-item"><strong>{{name}}</strong>: {{#if value}}Found with ID = {{value}}{{else}}Not found?{{/if}}</li>
+					<li class="list-group-item">
+						{{#if value}}
+							<span class="label label-success"><i class="fa fa-check"></i></span> <strong>{{name}}</strong>: Found with ID = {{value}}
+						{{else}}
+						  <span class="label label-danger"><i class="fa fa-times"></i></span> <strong>{{name}}</strong>: Not found?
+					  {{/if}}
+					</li>
 					{{/each}}
 				</ul>
 				{{else}}
@@ -99,9 +105,9 @@
 				<div class="panel panel-default">
 				<div class="panel-heading">Links Found on the Page {{#if meta.links}}<abbr title="Click on a link below to analyze the marketing plumbing on that page next."><i class="fa fa-question-circle"></i></abbr>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</div>
 				{{#if meta.links}}
-				<div class="list-group">
+				<div class="list-group page-links">
 					{{#each meta.links}}
-						<a href="{{this}}" class="list-group-item" title="Click to analyze">{{this}}</a>
+						<a href="{{this}}" class="list-group-item" title="Click to Analyze">{{this}}</a>
 					{{/each}}
 				</div>
 				{{else}}
@@ -207,7 +213,7 @@
 			}
 		}).submit();
 
-		$(document).on('click','div a', function(e){
+		$(document).on('click','div.page-links a', function(e){
 			e.preventDefault();
 			if ( this.href.substr(0,4) == 'tel:' ) {
 				alert('oops! running on telephone numbers is not supported ... at this time?');
