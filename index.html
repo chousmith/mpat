@@ -3,48 +3,107 @@
 <head>
 	<title>NLKMPAT (better name coming soon)</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<!--
 	<style type="text/css">
 		body{margin:0;font-family:Helvetica,Arial,sans-serif;overflow-x:hidden}form{background:#f5f5f5;padding:1em;margin:0}div{padding:0 1em}p{font-size:.75em;margin:.5em 0}input{margin-right:0;background:#fff;font-size:1.3em;border:0;border-left:3px solid #08f;padding:.5em;display:inline-block;max-width:80%}.subm{cursor:pointer}a{color:#08f;text-decoration:none}hr{margin:0;border:2px solid #eee;clear:both}img{box-shadow:0 0 3px #aaa;border-radius:2px;max-width:50%}h2{font-size:1.3em;font-weight:400}span{color:#ccc}img{float:left;margin-bottom:2em}.meta{float:left;width:40%}.meta h2{margin:0}ul{margin:0;padding:0;margin-bottom:2em}li{list-style:none;margin-top:.5em}@media (max-width:700px){img{margin-bottom:0}.meta,img{max-width:100%;padding:1em 0}}
 	</style>
+	-->
+	<style type="text/css">
+	/* Sticky footer styles
+	-------------------------------------------------- */
+	html {
+	  position: relative;
+	  min-height: 100%;
+	}
+	body {
+	  /* Margin bottom by footer height */
+	  margin-bottom: 60px;
+	}
+	.footer {
+	  position: absolute;
+	  bottom: 0;
+	  width: 100%;
+	  /* Set the fixed height of the footer here */
+	  height: 60px;
+	  background-color: #f5f5f5;
+	}
+	/* and then more styles if needed */
+	.footer {
+		padding-top: 20px;
+	}
+	</style>
 </head>
 <body>
-	<form method="post">
-		<p>
-			Ninthlink Marketing Plumbing Analysis Tool ("nlkmpat") -
-			<a href="https://github.com/chousmith/nlkmpat">source on github</a>
-		</p>
-		<input type="url" name="url" value="http://www.ninthlink.com/" size="70" required tabindex=1>
-		<input type="submit" value="&raquo;" class="subm">
+	<div class="container">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+	<form method="post" class="form-inline">
+		<h1>
+			Ninthlink Marketing Plumbing Analysis Tool
+			<small>&ldquo;<abbr title="v0.1 : better name coming soon">nlkmpat</abbr>&rdquo;</small>
+		</h1>
+  <div class="form-group">
+    <label class="sr-only" for="url">Enter a URL here</label>
+    <div class="input-group">
+      <div class="input-group-addon"><i class="fa fa-globe"></i></div>
+      <input type="url" name="url" class="form-control" id="url" value="" placeholder="Enter a URL here" size="70" required tabindex=1>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">submit</button>
 	</form>
+</div>
+</div>
+<div class="container-fluid" id="catchem" role="main">
 
 	<script id="query-template" type="text/x-handlebars-template">
-
-		<h2>POST / <span>?{{#each params}}{{name}}={{value}}{{/each}}</span></h2>
-
-		{{#if imgsrc}}
-			<img src="{{imgsrc}}" />
-		{{/if}}
-
-		<div class="meta">
-			{{#if meta}}
-				<h2>Page Title: {{meta.title}}</h2>
-				<p>Links found on the page</p>
-				<ul>
-					{{#each meta.links}}
-					<li>
-						<a href="{{this}}">{{this}}</a>
-					</li>
-					{{/each}}
-				</ul>
-				<div class="pie-chart"></div>
+<div class="row">
+	<div class="col-md-6">
+			{{#if imgsrc}}
+				<img src="{{imgsrc}}" class="img img-responsive" />
 			{{/if}}
 		</div>
+		<div class="col-md-6">
+		<h2>{{#each params}}{{name}}: {{value}}{{/each}}</h2>
 
-		<hr />
+			{{#if meta}}
+				<h3>Page Title: {{meta.title}}</h3>
+				<div class="panel panel-default">
+				<div class="panel-heading">Marketing Plumbing Checks</div>
+				<div class="panel-body">
+					<p>... coming soon ...</p>
+				</div>
+				</div>
+				<div class="panel panel-default">
+				<div class="panel-heading">Links found on the page</div>
+				<div class="panel-body">
+					<p>Click on a link below to analyze the marketing plumbing on that page next.</p>
+			  </div>
+				<div class="list-group">
+					{{#each meta.links}}
+						<a href="{{this}}" class="list-group-item">{{this}}</a>
+					{{/each}}
+				</div>
+			</div>
+			<div class="well">
+				<div class="pie-chart"></div>
+			</div>
+			{{/if}}
+	</div>
 
+</div>
+<div class="row">
+<hr />
+</div>
 	</script>
-
-
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">&copy; Copyright 2016 Ninthlink, Inc.  <a href="https://github.com/chousmith/nlkmpat"><i class="fa fa-github" aria-hidden="true" title="source on github"></i></a></p>
+  </div>
+</footer>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 	<script type="text/javascript">
@@ -61,7 +120,7 @@
 			var params = $form.serializeArray();
 
 			var data = {params:params};
-			var $el = $('<div>').insertAfter($form);
+			var $el = $('<div>').prependTo($form.parent().parent().next());
 			$el.html(template(data));
 
 			$.post('', params)
