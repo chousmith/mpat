@@ -84,8 +84,8 @@
 			{{/if}}
 			{{#if meta}}
 				<h3>Page Title: {{meta.title}}</h3>
-				<div class="panel panel-default">
-				<div class="panel-heading">Marketing Plumbing Checks</div>
+				<div class="panel panel-{{#if errorcount}}danger{{else}}default{{/if}}">
+				<div class="panel-heading">Marketing Plumbing Checks{{#if errorcount}} <span class="badge">{{errorcount}}</span>{{/if}}</div>
 				{{#if meta.resources.checks}}
 				<ul class="list-group">
 					{{#each meta.resources.checks}}
@@ -171,6 +171,8 @@
 
 					console.log('reload?');
 					console.log(data);
+
+					data.errorcount = data.meta.resources.errors.length;
 
 					$el.html(template(data));
 
