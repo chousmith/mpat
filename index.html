@@ -84,8 +84,8 @@
 			{{/if}}
 			{{#if meta}}
 				<h3>Page Title: {{meta.title}}</h3>
-				<div class="panel panel-{{#if errorcount}}danger{{else}}default{{/if}}">
-				<div class="panel-heading">Marketing Plumbing Checks{{#if errorcount}} <span class="badge">{{errorcount}}</span>{{/if}}</div>
+				<div class="panel panel-{{errorlevel}}">
+				<div class="panel-heading">Marketing Plumbing Checks{{#if errorcount}} <span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{/if}}</div>
 				{{#if meta.resources.checks}}
 				<ul class="list-group">
 					{{#each meta.resources.checks}}
@@ -173,6 +173,15 @@
 					console.log(data);
 
 					data.errorcount = data.meta.resources.errors.length;
+					if ( data.errorcount == 0 ) {
+						data.errorlevel = 'primary'; //'success';
+					} else if ( data.errorcount < 4 ) {
+						// arbitrary point
+						data.errorlevel = 'warning';
+					} else {
+						data.errorlevel = 'danger';
+					}
+
 
 					$el.html(template(data));
 
