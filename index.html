@@ -40,11 +40,12 @@
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
+				<h1>
+					Ninthlink Marketing Plumbing Analysis Tool
+					<small>&ldquo;<abbr title="v0.1 : better name coming soon">nlkmpat</abbr>&rdquo;</small>
+				</h1>
+				<p>Enter a URL below to analyze the "Marketing Plumbing" on the page.</p>
 	<form method="post" class="form-inline">
-		<h1>
-			Ninthlink Marketing Plumbing Analysis Tool
-			<small>&ldquo;<abbr title="v0.1 : better name coming soon">nlkmpat</abbr>&rdquo;</small>
-		</h1>
   <div class="form-group">
     <label class="sr-only" for="url">Enter a URL here</label>
     <div class="input-group">
@@ -52,7 +53,7 @@
       <input type="url" name="url" class="form-control" id="url" value="" placeholder="Enter a URL here" size="70" required tabindex=1>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">submit</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 </div>
 </div>
@@ -60,6 +61,12 @@
 
 	<script id="query-template" type="text/x-handlebars-template">
 <div class="row">
+	{{#if loading}}
+  <div class="col-xs-12 text-center">
+    <h2>loading {{#each params}}{{name}}: {{value}}{{/each}}<br />
+		<i class="fa fa-cog fa-spin"></i></h2>
+	</div>
+	{{else}}
 	<div class="col-md-6">
 			{{#if imgsrc}}
 				<img src="{{imgsrc}}" class="img-responsive img-thumbnail" />
@@ -92,7 +99,7 @@
 			</div>
 			{{/if}}
 	</div>
-
+  {{/if}}
 </div>
 <div class="row">
 <hr />
@@ -116,41 +123,50 @@
 
 		$('form').on('submit', function(e){
 			e.preventDefault();
-			var $form = $(this);
-			var params = $form.serializeArray();
+			if ( $('#url').val() !== '' ) {
+				var $form = $(this);
+				var params = $form.serializeArray();
 
-			var data = {params:params};
-			var $el = $('<div>').prependTo($form.parent().parent().next());
-			$el.html(template(data));
-
-			$.post('', params)
-			.then(function(response){
-
-				// json and image split to lines (FF doesn't like image uris in json)
-				var parts = response.split("\n");
-				data.imgsrc = parts[1]
-				data.meta = $.parseJSON(parts[0]);
-
+				var data = {
+					params: params,
+				  loading: true
+				};
+				var $el = $('<div>').prependTo($form.parent().parent().next());
+				// console.log('loading initial template.. with data :');
+				// console.log(data);
 				$el.html(template(data));
 
-				if(chartsLoaded){
+				$.post('', params)
+				.then(function(response){
 
-					data.meta.link_areas.unshift(['URL', 'Area'])
+					// json and image split to lines (FF doesn't like image uris in json)
+					var parts = response.split("\n");
+					data.imgsrc = parts[1]
+					data.meta = $.parseJSON(parts[0]);
+					data.loading = false;
+					// console.log('reload?');
+					// console.log(data);
+					$el.html(template(data));
 
-					var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
+					if(chartsLoaded){
 
-					var options = {
-						title:"Links by area",
-						legend:{position:'none'},
-						pieSliceText:'none'
-					};
+						data.meta.link_areas.unshift(['URL', 'Area'])
 
-					var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
-					chart.draw(datatable, options);
+						var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
 
-				}
+						var options = {
+							title:"Links by area",
+							legend:{position:'none'},
+							pieSliceText:'none'
+						};
 
-			})
+						var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
+						chart.draw(datatable, options);
+
+					}
+
+				});
+			}
 		}).submit();
 
 		$(document).on('click','div a', function(e){
