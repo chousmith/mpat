@@ -86,9 +86,17 @@
 				<h3>Page Title: {{meta.title}}</h3>
 				<div class="panel panel-default">
 				<div class="panel-heading">Marketing Plumbing Checks</div>
+				{{#if meta.resources}}
+				<ul class="list-group">
+					{{#each meta.resources}}
+					<li class="list-group-item"><abbr title="{{this}}">...</abbr></li>
+					{{/each}}
+				</ul>
+				{{else}}
 				<div class="panel-body">
-					<p>... coming soon ...</p>
+					<p>Oops? Something went wrong.</p>
 				</div>
+				{{/if}}
 				</div>
 				<div class="panel panel-default">
 				<div class="panel-heading">Links Found on the Page {{#if meta.links}}<abbr title="Click on a link below to analyze the marketing plumbing on that page next."><i class="fa fa-question-circle"></i></abbr>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</div>
@@ -160,8 +168,10 @@
 					} else {
 						data.url = '';
 					}
-					// console.log('reload?');
-					// console.log(data);
+
+					console.log('reload?');
+					console.log(data);
+
 					$el.html(template(data));
 
 					if ( chartsLoaded ) {
