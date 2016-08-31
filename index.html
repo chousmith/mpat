@@ -169,7 +169,14 @@
 
 
 		$('form').on('submit', function(e){
+			// we don't want page reload so
 			e.preventDefault();
+			// but that means we break default tracking so also
+			window.dataLayer = window.dataLayer || [];
+		  window.dataLayer.push({
+		    'event' : 'formSubmissionSuccess'
+		  });
+			// and then the rest of our handler
 			if ( $('#url').val() !== '' ) {
 				var $form = $(this);
 				var params = $form.serializeArray();
@@ -243,7 +250,7 @@
 			if ( this.href.substr(0,4) == 'tel:' ) {
 				alert('oops! running on telephone numbers is not supported ... at this time?');
 			} else {
-				$('input[name=url]').val(this.href).submit();
+				$('#url').val(this.href).submit();
 				$('body').animate({scrollTop:0});
 			}
 		});
