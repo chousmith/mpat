@@ -245,13 +245,21 @@
 			}
 		}).submit();
 
-		$(document).on('click','div.page-links a', function(e){
-			e.preventDefault();
-			if ( this.href.substr(0,4) == 'tel:' ) {
-				alert('oops! running on telephone numbers is not supported ... at this time?');
-			} else {
-				$('#url').val(this.href).submit();
-				$('body').animate({scrollTop:0});
+		$(document).on('click','a', function(e){
+			// gtm
+			window.dataLayer = window.dataLayer || [];
+		  window.dataLayer.push({
+		    'event' : 'linkClicked'
+		  });
+			// and then
+			if ( $(this).hasClass('list-group-item') ) {
+				e.preventDefault();
+				if ( this.href.substr(0,4) == 'tel:' ) {
+					alert('oops! running on telephone numbers is not supported ... at this time?');
+				} else {
+					$('#url').val(this.href).submit();
+					$('body').animate({scrollTop:0});
+				}
 			}
 		});
 	</script>
