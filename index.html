@@ -78,7 +78,7 @@
 		</div>
 		<div class="col-md-6">
 			{{#if url}}
-		<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}<small> <i class="fa fa-external-link"></i></small></a></h4>
+				<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}<small> <i class="fa fa-external-link"></i></small></a></h4>
 			{{/if}}
 			{{#if meta}}
 				<h4>Page Title: {{meta.title}}</h4>
@@ -96,6 +96,7 @@
 					</li>
 					{{/each}}
 				</ul>
+				<div class="panel-footer"><em>Coming Soon: GA pageview &amp; ecommerce, Adroll, Google Remarketing, Optimizely, Criteo, and more!</em></div>
 				{{else}}
 				<div class="panel-body">
 					<p>Oops? Something went wrong.</p>
@@ -119,6 +120,27 @@
 			<div class="well">
 				<div class="pie-chart"></div>
 			</div>
+			{{else}}
+			<div class="panel panel-danger">
+				<div class="panel-heading">Marketing Plumbing Checks</div>
+				<div class="panel-body">
+					<p>Oops? Something went wrong.</p>
+				</div>
+			</div>
+			{{/if}}
+
+			{{#if url}}
+				<div class="panel panel-info">
+					<div class="panel-heading">Additional Resources</div>
+					<div class="panel-body">
+						<!-- <div class="btn-group" role="group"> -->
+							<a href="https://gtmetrix.com/?url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-clock-o"></i> GTmetrix</a>
+							<a href="https://developers.facebook.com/tools/debug/sharing/?q={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-facebook-official"></i> Sharing Debugger</a>
+							<a href="https://www.google.com/webmasters/tools/mobile-friendly/?url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-google"></i> Mobile-Friendly Test</a>
+							<a href="https://search.google.com/structured-data/testing-tool/u/0/#url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-google"></i> Structured Data Testing</a>
+					<!-- </div> -->
+					</div>
+				</div>
 			{{/if}}
 	</div>
   {{/if}}
