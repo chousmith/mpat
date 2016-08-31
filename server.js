@@ -314,7 +314,8 @@ function request_page(url, callback){
 		            break;
 		        }
 		      }
-
+					properties.pageloadtime = ( t / 1000 );
+					
 					properties.resources = { checks: resource_checks, errors: resource_errors };
 					//properties.resources_summary = resources_summary;
 

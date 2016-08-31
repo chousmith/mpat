@@ -82,6 +82,9 @@
 			{{/if}}
 			{{#if meta}}
 				<h4>Page Title: {{meta.title}}</h4>
+				{{#if meta.pageloadtime}}
+				<h5>Page Load Time: <abbr title="Load time may not be exact : compare to GTmetrix for a better approximation.">{{meta.pageloadtime}} seconds</abbr></h5>
+				{{/if}}
 				<div class="panel panel-{{errorlevel}}">
 				<div class="panel-heading">Marketing Plumbing Checks {{#if errorcount}}<span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{else}}<span class="label label-success">Hooray!</span>{{/if}}</div>
 				{{#if meta.resources.checks}}
