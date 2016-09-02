@@ -17,6 +17,16 @@ https://nlkmpat-dev.herokuapp.com/
 phantomjs server.js
 ```
 
+#### Command Line Arguments
+
+```bash
+phantomjs server.js buffer=2000 debug=true
+```
+
+Setting `buffer` = some number will change the `BUFFER_TIME` variable amount of time that the script waits after initial `page.onLoadFinished` to actually loop through and track and process all the resources logged.
+
+Setting `debug=true` will turn `DEBUG` mode and extra robust messaging on from the cmd line
+
 ## Deploying
 
 This can be deployed to heroku with the [phantomjs buildpack](https://github.com/stomita/heroku-buildpack-phantomjs).

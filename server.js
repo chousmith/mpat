@@ -1,16 +1,52 @@
 var server = require('webserver').create(),
 	system = require('system'),
+	args = system.args,
 	fs     = require('fs'),
 	port   = system.env.PORT || 8080,
 	firedonce = false,
-	// how long should we wait for the page to load before we exit (in ms)
-	WAIT_TIME = 5000,
+	// not used right now : how long to wait for page before exit (in ms)
+	//WAIT_TIME = 5000,
 	// how long after page "load" to output our summary?
 	BUFFER_TIME = 1000,
-	// if the page hasn't loaded yet, something is probably wrong
-	MAX_EXECUTION_TIME = 15000,
+	// not used right now : if page hasn't loaded yet, something's wrong?
+	//MAX_EXECUTION_TIME = 15000,
 	// whether to output extra robust logging or not, really
 	DEBUG = false;
+
+// look for args in case we are running this in the cmd line
+var argl = args.length;
+if ( argl > 1 ) {
+
+	// console.log('hello! heres some args');
+	// console.log(args);
+
+	var argex = '';
+	while ( argl-- ) {
+		if ( argl >= 0 ) {
+			argex = args[ argl ].split('=');
+			// console.log('' + argl +' : ');
+			// console.log( argex );
+			if ( argex.length > 1 ) {
+				// then the arg was something=something, so look it up
+				switch( argex[0] ) {
+					case 'buffer':
+						BUFFER_TIME = parseInt( argex[1], 10 );
+						console.log( 'BUFFER_TIME set to buffer='+ BUFFER_TIME );
+						break;
+					case 'debug':
+						DEBUG = ( argex[1] == 'true' );
+						console.log( 'DEBUG set to debug='+ ( DEBUG ? 'true' : 'false' ) );
+						break;
+					default:
+						console.log( 'oops! you tried to pass an arg that i didnt quite understand. try debug=true or buffer=2000' );
+						console.log( 'in the meantime, starting anyways. to cancel, press Ctrl+C or ^C or whatever at any time' );
+						break;
+				}
+			}
+		}
+	}
+}
+
 
 // a list of regular expressions of resources (urls) to log when we load them
 var resources_to_log = [
@@ -315,7 +351,7 @@ function request_page(url, callback){
 		        }
 		      }
 					properties.pageloadtime = ( t / 1000 );
-					
+
 					properties.resources = { checks: resource_checks, errors: resource_errors };
 					//properties.resources_summary = resources_summary;
 
