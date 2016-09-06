@@ -216,6 +216,13 @@ function request_page(url, callback){
 		      for( var i in resources_summary ) {
 		        if ( DEBUG ) {
 		          console.log('* '+ resources_summary[i][0] + ' : '+ resources_summary[i][1].length );
+
+							// in the case of debug, output it all?
+							// if ( resources_summary[i][1].length > 0 ) {
+							// 	for ( var s in resources_summary[i][1] ) {
+							// 		console.log( resources_summary[i][1][s] )
+							// 	}
+							// }
 		        }
 		        switch ( resources_summary[i][0] ) {
 		          case 'gtm':
@@ -315,20 +322,23 @@ function request_page(url, callback){
 		            }
 		            break;
 							case 'fb':
-		            console.log( resources_summary[i][1].length +' '+ resources_summary[i][0] +' file'+ ( resources_summary[i][1].length > 1 ? 's' : '' ) );
-		            if ( DEBUG ) {
-		              if ( resources_summary[i][1].length > 0 ) {
-		                for ( var s in resources_summary[i][1] ) {
-		                  console.log( resources_summary[i][1][s] )
-		                }
-		              }
-		            }
 								if ( resources_summary[i][1].length == 0 ) {
 									emsg = 'No Facebook found?';
 									console.log( emsg );
 									resource_errors.unshift( emsg );
 								} else {
-									resource_checks[3]['value'] = '... something ...'; //resources_summary[i][1].length;
+									// try to extract fb id from 1 pixel?
+									var fbat = resources_summary[i][1][0];
+									fbat = fbat.indexOf('?id=');
+									if ( fbat > 0 ) {
+										fbat = resources_summary[i][1][0].substr( fbat + 4 );
+										// and trim off the rest
+										fbat = fbat.substr( 0, fbat.indexOf('&') );
+									} else {
+										fbat = '... something ...'; //resources_summary[i][1].length;
+									}
+									console.log('Facebook Pixel found, with ID = '+ fbat );
+									resource_checks[3]['value'] = fbat;
 								}
 							  break;
 		          case 'font':
