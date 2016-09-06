@@ -7,9 +7,9 @@ Analyze the marketing plumbing of a URL using phantomjs webserver module. Origin
 
 ### Heroku
 
-https://nlkmpat-dev.herokuapp.com/
+http://mpa-dev.ninthlink.agency/ aka http://nlkmpat-dev.herokuapp.com/
 
-![heroku screenshot](https://raw.github.com/chousmith/phantomjs-webserver-example/master/screenshot.png)
+![heroku screenshot](https://raw.github.com/chousmith/nlkmpat/master/screenshot.png)
 
 ### Command line via phantomjs
 
