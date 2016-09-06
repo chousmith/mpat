@@ -154,11 +154,11 @@ function request_page(url, callback){
 	};
 
 	page.onLoadStarted = function () {
-		console.log('loading:' + url);
+		console.log('loading: ' + url);
 	};
 
 	page.onLoadFinished = function (status) {
-		console.log('loaded:' + url);
+		console.log('loaded: ' + url);
 
 		  if ( !firedonce ) {
 		    t = Date.now() - t;
