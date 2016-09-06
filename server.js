@@ -83,9 +83,34 @@ var service = server.listen(port, function(request, response) {
 		})
 
 	} else {
-		response.statusCode = 200;
-		response.setHeader('Content-Type', 'text/html; charset=utf-8');
-		response.write(fs.read('index.html'));
+		//console.log('this is a GET or at least not a POST');
+		console.log( JSON.stringify( request.url ) );
+
+		if ( request.method == 'GET' ) {
+			if ( request.url == '/' ) {
+				response.statusCode = 200;
+				response.setHeader('Content-Type', 'text/html; charset=utf-8');
+				response.write(fs.read('index.html'));
+			} else if ( request.url == '/favicon.ico' ) {
+				response.statusCode = 200;
+				response.setHeader('Content-Type', 'image/x-icon');
+			  response.setEncoding("binary");
+				var image = fs.open("favicon.ico", "rb");
+  			var data = image.read();
+			  response.write(data);
+			} else {
+				// return an error
+				response.statusCode = 404;
+				response.setHeader('Content-Type', 'text/html; charset=utf-8');
+				response.write(fs.read('oops.html'));
+			}
+		} else {
+			// return an error
+			response.statusCode = 404;
+			response.setHeader('Content-Type', 'text/html; charset=utf-8');
+			response.write(fs.read('oops.html'));
+		}
+
 		response.close();
 	}
 
