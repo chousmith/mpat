@@ -51,7 +51,7 @@
       <input type="url" name="url" class="form-control" id="url" value="" placeholder="Enter a URL here" size="70" required tabindex=1>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">Submit</button>
 	</form>
 </div>
 </div>
@@ -159,6 +159,7 @@
   </div>
 </footer>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 	<script type="text/javascript">
 
@@ -178,8 +179,12 @@
 		  });
 			// and then the rest of our handler
 			if ( $('#url').val() !== '' ) {
+				// and then
 				var $form = $(this);
 				var params = $form.serializeArray();
+				var $btn = $form.find('button');
+				// make the Submit btn loading
+				$btn.button('loading');
 
 				var data = {
 					params: params,
@@ -192,6 +197,8 @@
 
 				$.post('', params)
 				.then(function(response){
+					// we got a response, so revert the btn either way
+					$btn.button('reset');
 
 					// json and image split to lines (FF doesn't like image uris in json)
 					var parts = response.split("\n");
