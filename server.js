@@ -1,3 +1,4 @@
+
 var server = require('webserver').create(),
 	system = require('system'),
 	args = system.args,
@@ -7,7 +8,7 @@ var server = require('webserver').create(),
 	// not used right now : how long to wait for page before exit (in ms)
 	//WAIT_TIME = 5000,
 	// how long after page "load" to output our summary?
-	BUFFER_TIME = 1000,
+	BUFFER_TIME = 3000,
 	// not used right now : if page hasn't loaded yet, something's wrong?
 	//MAX_EXECUTION_TIME = 15000,
 	// whether to output extra robust logging or not, really
@@ -179,11 +180,13 @@ function request_page(url, callback){
 	};
 
 	page.onLoadStarted = function () {
+		console.log('--------------------------------------------------');
 		console.log('loading: ' + url);
 	};
 
 	page.onLoadFinished = function (status) {
 		console.log('loaded: ' + url);
+		console.log('--------------------------------------------------');
 
 		  if ( !firedonce ) {
 		    t = Date.now() - t;
@@ -234,7 +237,7 @@ function request_page(url, callback){
 		      console.log('--------------------------------------------------');
 		      if ( DEBUG ) {
 		        console.log('Then we waited '+ (BUFFER_TIME/1000) +' seconds to output this summary..');
-		        console.log('resources_summary_key ::' + JSON.stringify(resources_summary_key));
+		        //console.log('resources_summary_key ::' + JSON.stringify(resources_summary_key));
 		      }
 
 					var emsg = '';
@@ -280,15 +283,19 @@ function request_page(url, callback){
 		                if ( DEBUG ) {
 		                  console.log( resources_summary[i][1][s] );
 		                }
-		                // search each for a tid
-		                var tidat = resources_summary[i][1][s].indexOf('&tid=');
-		                if ( tidat > 0 ) {
-		                  var nextt = resources_summary[i][1][s].indexOf('&', tidat + 1);
-		                  nextt = resources_summary[i][1][s].substr( tidat, nextt - tidat );
-											nextt = nextt.substr(5);
-		                  console.log('Google Analytics found, with '+ nextt );
-											resource_checks[1]['value'] = nextt;
-		                }
+										if ( resources_summary[i][1][s] == 'https://www.google-analytics.com/analytics.js' ) {
+											resource_checks[1]['value'] = 'Loaded, but maybe missing a UA code?';
+										} else {
+			                // search each for a tid
+			                var tidat = resources_summary[i][1][s].indexOf('&tid=');
+			                if ( tidat > 0 ) {
+			                  var nextt = resources_summary[i][1][s].indexOf('&', tidat + 1);
+			                  nextt = resources_summary[i][1][s].substr( tidat, nextt - tidat );
+												nextt = nextt.substr(5);
+			                  console.log('Google Analytics found, with '+ nextt );
+												resource_checks[1]['value'] = nextt;
+			                }
+										}
 		              }
 		            }
 		            break;
@@ -392,14 +399,21 @@ function request_page(url, callback){
 
 					var imageuri = 'data:image/png;base64,' + page.renderBase64('png');
 
-					callback(properties,imageuri);
-
 					page.close();
+
+					callback(properties,imageuri);
 		    }, BUFFER_TIME );
 		  }
 		  firedonce = true;
 		  // and then?
 	};
-
-	page.open(url);
+	// manually clear cache just in case
+	page.clearMemoryCache();
+	// wrap page.open in setTimeout to try and fix a crash bug?!
+	setTimeout( function() {
+		// reset our t counter
+		t = Date.now();
+		// and now that alllll that is set up, actually load the url
+		page.open(url);
+	}, 200 );
 }
