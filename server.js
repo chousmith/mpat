@@ -67,28 +67,26 @@ var resources_to_log = [
 ];
 
 var service = server.listen(port, function(request, response) {
-
-	if(request.method == 'POST' && request.post.url){
+	if(request.method == 'POST' && request.post.url) {
 		var url = request.post.url;
 
-		request_page(url, function(properties, imageuri){
+		request_page( url, function ( properties, imageuri ) {
 			response.statusCode = 200;
-			response.write(JSON.stringify(properties));
-			response.write("\n");
-			response.write(imageuri);
+			response.write( JSON.stringify( properties ) );
+			response.write( "\n" );
+			response.write( imageuri );
 			response.close();
-		})
+		});
 
 	} else {
+		var loaderror = true;
 		//console.log('this is a GET or at least not a POST');
 		console.log( JSON.stringify( request.url ) );
 
 		if ( request.method == 'GET' ) {
-			if ( request.url == '/' ) {
-				response.statusCode = 200;
-				response.setHeader('Content-Type', 'text/html; charset=utf-8');
-				response.write(fs.read('index.html'));
-			} else if ( request.url == '/favicon.ico' ) {
+			if ( request.url == '/favicon.ico' ) {
+				loaderror = false;
+				// simple case : serve up our favicon
 				response.statusCode = 200;
 				response.setHeader('Content-Type', 'image/x-icon');
 			  response.setEncoding('binary');
@@ -96,16 +94,20 @@ var service = server.listen(port, function(request, response) {
   			var data = image.read();
 			  response.write(data);
 			} else {
-				// return an error
-				response.statusCode = 404;
-				response.setHeader('Content-Type', 'text/html; charset=utf-8');
-				response.write(fs.read('oops.html'));
+				if ( ( request.url == '/' ) || ( request.url.indexOf('/?url=') === 0 ) ) {
+					loaderror = false;
+					response.statusCode = 200;
+					response.setHeader( 'Content-Type', 'text/html; charset=utf-8' );
+					response.write( fs.read( 'index.html' ) );
+				}
 			}
-		} else {
+		}
+
+		if ( loaderror ) {
 			// return an error
 			response.statusCode = 404;
-			response.setHeader('Content-Type', 'text/html; charset=utf-8');
-			response.write(fs.read('oops.html'));
+			response.setHeader( 'Content-Type', 'text/html; charset=utf-8');
+			response.write( fs.read( 'oops.html' ) );
 		}
 
 		response.close();
