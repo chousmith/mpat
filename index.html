@@ -161,6 +161,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 <script type="text/javascript">
+	// http://stackoverflow.com/a/2723190
+	function isUrlValid(url) {
+		return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+	}
+
 	// quick heroku redirect too just because
 	if ( window.location.hostname == 'nlkmpat-dev.herokuapp.com' ) {
 		window.location.href = 'http://mpa-dev.ninthlink.agency';
@@ -188,109 +193,130 @@
 	  window.dataLayer.push({
 	    'event' : 'formSubmissionSuccess'
 	  });
+		// remove any previous url error
+		var $fgroup = $('#url').parents('.form-group');
+		$fgroup.removeClass('has-error');
 		// and then the rest of our handler
-		if ( $('#url').val() !== '' ) {
-			// and then
-			var $form = $(this);
-			var params = $form.serializeArray();
-			var $btn = $form.find('button');
-			// make the Submit btn loading
-			$btn.button('loading');
-			// wipe out any "try again?" links?
-			$('.ldr a').remove();
+		var urrl = $('#url').val();
+		if ( urrl !== '' ) {
+			// console.log( 'loading url = '+ urrl );
+			// validate the url
+			if ( isUrlValid( urrl ) == false ) {
+				$fgroup.addClass('has-error');
+				// alert('Please enter a valid URL');
+			} else {
+				// and then
+				var $form = $(this);
+				var params = $form.serializeArray();
+				var $btn = $form.find('button');
+				// make the Submit btn loading
+				$btn.button('loading');
+				// wipe out any "try again?" links?
+				$('.ldr a').remove();
 
-			var data = {
-				params: params,
-			  loading: true
-			};
-			var $el = $('<div>').prependTo( $form.parent().parent().next() );
-			// console.log('loading initial template.. with data :');
-			// console.log(data);
-			$el.html(template(data));
-
-			$.post( '', params )
-			.done( function ( response ) {
-				// success! parse the data better now :
-				// json and image split to lines (FF doesn't like image uris in json)
-				var parts = response.split("\n");
-				data.imgsrc = parts[1]
-				data.meta = $.parseJSON(parts[0]);
-
-				data.loading = false;
-				if ( params[0]['name'] == 'url' ) {
-					data.url = params[0]['value'];
-				} else {
-					data.url = '';
-				}
-
-				if ( data.meta.timestamp ) {
-					// format timestamp
-					var td = new Date( data.meta.timestamp );
-					// http://www.w3schools.com/jsref/jsref_tolocalestring.asp
-					data.meta.timestamp = td.toLocaleDateString() +' '+ td.toLocaleTimeString();
-				} else {
-					data.meta.timestamp = 'err';
-				}
-
-				// console.log('reload:');
+				var data = {
+					params: params,
+				  loading: true
+				};
+				var $el = $('<div>').prependTo( $form.parent().parent().next() );
+				// console.log('loading initial template.. with data :');
 				// console.log(data);
-
-				// count our errors and output accordingly
-				data.errorcount = data.meta.resources.errors.length;
-				if ( data.errorcount == 0 ) {
-					data.errorlevel = 'primary'; //'success';
-				} else if ( data.errorcount < 4 ) {
-					// arbitrary point
-					data.errorlevel = 'warning';
-				} else {
-					data.errorlevel = 'danger';
-				}
-
-				// inject the handlebars template data
 				$el.html(template(data));
 
-				// draw the Links by area chart
-				if ( chartsLoaded ) {
+				$.post( '', params )
+				.done( function ( response ) {
+					// success! parse the data better now :
+					// json and image split to lines (FF doesn't like image uris in json)
+					var parts = response.split("\n");
+					data.imgsrc = parts[1]
+					data.meta = $.parseJSON(parts[0]);
 
-					data.meta.link_areas.unshift(['URL', 'Area']);
+					data.loading = false;
+					if ( params[0]['name'] == 'url' ) {
+						data.url = params[0]['value'];
+					} else {
+						data.url = '';
+					}
 
-					// console.log('link areas to chart :');
-					// console.log(data.meta.link_areas);
+					if ( data.meta.timestamp ) {
+						// format timestamp
+						var td = new Date( data.meta.timestamp );
+						// http://www.w3schools.com/jsref/jsref_tolocalestring.asp
+						data.meta.timestamp = td.toLocaleDateString() +' '+ td.toLocaleTimeString();
+					} else {
+						data.meta.timestamp = 'err';
+					}
 
-					var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
+					// console.log('reload:');
+					// console.log(data);
 
-					var options = {
-						title: 'Links by area',
-						legend: { position: 'none' },
-						pieSliceText: 'none'
-					};
+					// count our errors and output accordingly
+					data.errorcount = data.meta.resources.errors.length;
+					if ( data.errorcount == 0 ) {
+						data.errorlevel = 'primary'; //'success';
+					} else if ( data.errorcount < 4 ) {
+						// arbitrary point
+						data.errorlevel = 'warning';
+					} else {
+						data.errorlevel = 'danger';
+					}
 
-					var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
-					chart.draw(datatable, options);
+					// inject the handlebars template data
+					$el.html(template(data));
 
-				}
+					// draw the Links by area chart
+					if ( chartsLoaded ) {
 
-			}).fail( function ( data ) {
-				console.log( 'oops, something went wrong. Response:' );
-				console.log(data);
-				// replace cog spinner loader
-				var emsg = 'Oops! Something went wrong. ';
-				if ( data.statusText ) {
-					emsg += 'Response: '+ data.statusText;
-				}
-				emsg += '<br /><a href="#">try again?</a>';
+						data.meta.link_areas.unshift(['URL', 'Area']);
 
-				$('.ldr:first').html( '<small>'+ emsg +'</small>' ).find('a')
-					.unbind( 'click' ).bind( 'click', function () {
-						$form.submit();
-						return false;
-					});
-			}).always( function ( data ) {
-				// either way we got a response, so revert the Loading btn
-				$btn.button( 'reset' );
-			});
+						// console.log('link areas to chart :');
+						// console.log(data.meta.link_areas);
+
+						var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
+
+						var options = {
+							title: 'Links by area',
+							legend: { position: 'none' },
+							pieSliceText: 'none'
+						};
+
+						var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
+						chart.draw(datatable, options);
+
+					}
+
+				}).fail( function ( data ) {
+					console.log( 'oops, something went wrong. Response:' );
+					console.log(data);
+					// replace cog spinner loader
+					var emsg = 'Oops! Something went wrong. ';
+					if ( data.statusText ) {
+						emsg += 'Response: '+ data.statusText;
+					}
+					emsg += '<br /><a href="#">try again?</a>';
+
+					$('.ldr:first').html( '<small>'+ emsg +'</small>' ).find('a')
+						.unbind( 'click' ).bind( 'click', function () {
+							$form.submit();
+							return false;
+						});
+				}).always( function ( data ) {
+					// either way we got a response, so revert the Loading btn
+					$btn.button( 'reset' );
+				});
+			}
 		}
-	}).submit();
+	});
+	
+	// console.log('loc chk');
+	// console.log( window.location );
+
+	if ( window.location.search != '' ) {
+		if ( window.location.search.indexOf('?url=') === 0 ) {
+			var urrl = window.location.search.substr(5);
+			$('#url').val( urrl ).submit();
+		}
+	}
 
 	$(document).on( 'click', 'a', function (e) {
 		// gtm
