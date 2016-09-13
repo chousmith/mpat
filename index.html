@@ -187,7 +187,7 @@
 			timeout: 30000
 		});
 
-		$('form').on('submit', function(e){
+		$('form').on( 'submit', function (e) {
 			// we don't want page reload so
 			e.preventDefault();
 			// but that means we break default tracking so also
@@ -210,13 +210,13 @@
 					params: params,
 				  loading: true
 				};
-				var $el = $('<div>').prependTo($form.parent().parent().next());
+				var $el = $('<div>').prependTo( $form.parent().parent().next() );
 				// console.log('loading initial template.. with data :');
 				// console.log(data);
 				$el.html(template(data));
 
-				$.post('', params)
-				.done(function(response){
+				$.post( '', params )
+				.done( function ( response ) {
 					// success! parse the data better now :
 					// json and image split to lines (FF doesn't like image uris in json)
 					var parts = response.split("\n");
@@ -242,6 +242,7 @@
 					// console.log('reload:');
 					// console.log(data);
 
+					// count our errors and output accordingly
 					data.errorcount = data.meta.resources.errors.length;
 					if ( data.errorcount == 0 ) {
 						data.errorlevel = 'primary'; //'success';
@@ -252,8 +253,10 @@
 						data.errorlevel = 'danger';
 					}
 
+					// inject the handlebars template data
 					$el.html(template(data));
 
+					// draw the Links by area chart
 					if ( chartsLoaded ) {
 
 						data.meta.link_areas.unshift(['URL', 'Area']);
@@ -274,42 +277,42 @@
 
 					}
 
-				}).fail(function(data) {
-
+				}).fail( function ( data ) {
 					console.log( 'oops, something went wrong. Response:' );
 					console.log(data);
-					// replace cog spinner with something?
+					// replace cog spinner loader
 					var emsg = 'Oops! Something went wrong. ';
 					if ( data.statusText ) {
 						emsg += 'Response: '+ data.statusText;
 					}
 					emsg += '<br /><a href="#">try again?</a>';
+
 					$('.ldr:first').html( '<small>'+ emsg +'</small>' ).find('a')
-						.unbind('click').bind('click', function() {
+						.unbind( 'click' ).bind( 'click', function () {
 							$form.submit();
 							return false;
 						});
-				}).always(function(data) {
-					// either way we got a response, so revert the btn
-					$btn.button('reset');
+				}).always( function ( data ) {
+					// either way we got a response, so revert the Loading btn
+					$btn.button( 'reset' );
 				});
 			}
 		}).submit();
 
-		$(document).on('click','a', function(e){
+		$(document).on( 'click', 'a', function (e) {
 			// gtm
 			window.dataLayer = window.dataLayer || [];
 		  window.dataLayer.push({
 		    'event' : 'linkClicked'
 		  });
 			// and then
-			if ( $(this).hasClass('list-group-item') ) {
+			if ( $(this).hasClass( 'list-group-item' ) ) {
 				e.preventDefault();
 				if ( this.href.substr(0,4) == 'tel:' ) {
 					alert('oops! running on telephone numbers is not supported ... at this time?');
 				} else {
-					$('#url').val(this.href).submit();
-					$('body').animate({scrollTop:0});
+					$('#url').val( this.href ).submit();
+					$('body').animate({ scrollTop: 0 });
 				}
 			}
 		});
@@ -319,8 +322,8 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
     	var chartsLoaded;
-		google.load("visualization", "1", {packages:["corechart"]});
-		google.setOnLoadCallback(function(){
+		google.load( "visualization", "1", { packages: [ "corechart" ] });
+		google.setOnLoadCallback( function () {
 			chartsLoaded = true;
 		});
     </script>
