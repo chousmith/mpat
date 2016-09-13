@@ -189,10 +189,14 @@ function request_page(url, callback){
 		console.log('--------------------------------------------------');
 
 		  if ( !firedonce ) {
-		    t = Date.now() - t;
+		    var properties = {};
 
-				var properties = {};
+				// set our original time we started at
+				properties.timestamp = t;
+				// change t to be the diff time it took
+				t = Date.now() - t;
 
+				// grab the page title
 				properties.title = page.evaluate(function () {
 				return document.title
 				});
