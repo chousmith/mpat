@@ -84,10 +84,13 @@
 				<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}<small> <i class="fa fa-external-link"></i></small></a></h4>
 			{{/if}}
 			{{#if meta}}
-				<h4>Page Title: {{meta.title}}</h4>
-				{{#if meta.pageloadtime}}
-				<h5>Page Load Time: <abbr title="Load time may not be exact : compare to GTmetrix for a better approximation.">{{meta.pageloadtime}} seconds</abbr></h5>
-				{{/if}}
+				<p>
+					Report Generated: {{meta.timestamp}}<br />
+					Page Title: {{meta.title}}<br />
+					{{#if meta.pageloadtime}}
+					Page Load Time: <abbr title="Load time may not be exact : compare to GTmetrix for a better approximation.">{{meta.pageloadtime}} seconds</abbr>
+					{{/if}}
+				</p>
 				<div class="panel panel-{{errorlevel}}">
 				<div class="panel-heading">Marketing Plumbing Checks {{#if errorcount}}<span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{else}}<span class="label label-success">Hooray!!</span>{{/if}}</div>
 				{{#if meta.resources.checks}}
@@ -220,6 +223,15 @@
 						data.url = params[0]['value'];
 					} else {
 						data.url = '';
+					}
+
+					if ( data.meta.timestamp ) {
+						// format timestamp
+						var td = new Date( data.meta.timestamp );
+						// http://www.w3schools.com/jsref/jsref_tolocalestring.asp
+						data.meta.timestamp = td.toLocaleDateString() +' '+ td.toLocaleTimeString();
+					} else {
+						data.meta.timestamp = 'err';
 					}
 
 					console.log('reload:');
