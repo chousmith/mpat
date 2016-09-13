@@ -177,7 +177,7 @@
 		return nowd.getFullYear();
 	});
 
-	var template = Handlebars.compile($("#query-template").html());
+	var template = Handlebars.compile( $('#query-template').html());
 
 	// gotcha - mongoose doesn't like a trailing 'utf8' on the content type
 	$.ajaxSetup({
@@ -265,9 +265,9 @@
 					var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
 
 					var options = {
-						title:"Links by area",
-						legend:{position:'none'},
-						pieSliceText:'none'
+						title: 'Links by area',
+						legend: { position: 'none' },
+						pieSliceText: 'none'
 					};
 
 					var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
@@ -319,7 +319,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   var chartsLoaded;
-	google.load( "visualization", "1", { packages: [ "corechart" ] });
+	google.load( 'visualization', '1', { packages: [ 'corechart' ] });
 	google.setOnLoadCallback( function () {
 		chartsLoaded = true;
 	});
