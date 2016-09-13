@@ -5,12 +5,8 @@ var server = require('webserver').create(),
 	fs     = require('fs'),
 	port   = system.env.PORT || 8080,
 	firedonce = false,
-	// not used right now : how long to wait for page before exit (in ms)
-	//WAIT_TIME = 5000,
 	// how long after page "load" to output our summary?
 	BUFFER_TIME = 3000,
-	// not used right now : if page hasn't loaded yet, something's wrong?
-	//MAX_EXECUTION_TIME = 15000,
 	// whether to output extra robust logging or not, really
 	DEBUG = false;
 
@@ -95,8 +91,8 @@ var service = server.listen(port, function(request, response) {
 			} else if ( request.url == '/favicon.ico' ) {
 				response.statusCode = 200;
 				response.setHeader('Content-Type', 'image/x-icon');
-			  response.setEncoding("binary");
-				var image = fs.open("favicon.ico", "rb");
+			  response.setEncoding('binary');
+				var image = fs.open('favicon.ico', 'rb');
   			var data = image.read();
 			  response.write(data);
 			} else {
@@ -117,7 +113,7 @@ var service = server.listen(port, function(request, response) {
 
 });
 
-if(service) console.log("server started - http://localhost:" + server.port);
+if(service) console.log('server started - http://localhost:' + server.port);
 
 function request_page(url, callback){
 
