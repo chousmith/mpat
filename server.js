@@ -237,8 +237,10 @@ function request_page(url, callback){
 				});
 
 		    setTimeout( function() {
-		      console.log('Page loaded in '+ ( t/1000 ) +' seconds with Status = '+ status );
-		      console.log('--------------------------------------------------');
+					var dt = new Date( properties.timestamp );
+					console.log( 'Report generated: '+ dt.toLocaleString() );
+		      console.log( 'Page loaded in '+ ( t/1000 ) +' seconds with Status = '+ status );
+		      console.log( '--------------------------------------------------' );
 		      if ( DEBUG ) {
 		        console.log('Then we waited '+ (BUFFER_TIME/1000) +' seconds to output this summary..');
 		        //console.log('resources_summary_key ::' + JSON.stringify(resources_summary_key));
