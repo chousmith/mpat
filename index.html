@@ -205,6 +205,10 @@
 				$fgroup.addClass('has-error');
 				// alert('Please enter a valid URL');
 			} else {
+				// update window.history
+				window.history.pushState({ url: urrl }, 'Report for '+ urrl, '/?url='+ urrl );
+				// set this pageTitle
+				document.title = 'Report for '+ urrl;
 				// and then
 				var $form = $(this);
 				var params = $form.serializeArray();
@@ -307,10 +311,11 @@
 			}
 		}
 	});
-	
+
 	// console.log('loc chk');
 	// console.log( window.location );
 
+	// check initial page URL
 	if ( window.location.search != '' ) {
 		if ( window.location.search.indexOf('?url=') === 0 ) {
 			var urrl = window.location.search.substr(5);
@@ -318,6 +323,7 @@
 		}
 	}
 
+	// catch link clicks to see if we should reload
 	$(document).on( 'click', 'a', function (e) {
 		// gtm
 		window.dataLayer = window.dataLayer || [];
@@ -335,6 +341,20 @@
 			}
 		}
 	});
+
+	// listen to window.onpopstate to catch back / forward browser moves?
+	window.onpopstate = function(e){
+    if( e.state ){
+			if ( e.state.url ) {
+				if ( e.state.url != '' ) {
+					// set this pageTitle
+					document.title = 'Report for '+ e.state.url;
+					// run the report
+		      $('#url').val( e.state.url ).submit();
+				}
+			}
+    }
+	};
 </script>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
