@@ -39,293 +39,291 @@
 	</style>
 </head>
 <body>
-	<div class="container">
-
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-				<h1>Marketing Plumbing Analyzer <small> &ldquo;<abbr title="v1.1 : better name coming soon?">nlkmpat</abbr>&rdquo;</small></h1>
-				<p>Enter a URL below to analyze the &ldquo;Marketing Plumbing&rdquo;</p>
-	<form method="post" class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="url">Enter a URL here</label>
-    <div class="input-group">
-      <div class="input-group-addon"><i class="fa fa-globe"></i></div>
-      <input type="url" name="url" class="form-control" id="url" value="" placeholder="Enter a URL here" size="70" required tabindex=1>
-    </div>
-  </div>
-  <button type="submit" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">Submit</button>
-	</form>
-</div>
+<div class="container">
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<h1>Marketing Plumbing Analyzer <small> &ldquo;<abbr title="v1.1 : better name coming soon?">nlkmpat</abbr>&rdquo;</small></h1>
+		<p>Enter a URL below to analyze the &ldquo;Marketing Plumbing&rdquo;</p>
+		<form method="post" class="form-inline">
+			<div class="form-group">
+				<label class="sr-only" for="url">Enter a URL here</label>
+				<div class="input-group">
+					<div class="input-group-addon"><i class="fa fa-globe"></i></div>
+					<input type="url" name="url" class="form-control" id="url" value="" placeholder="Enter a URL here" size="70" required tabindex=1>
+				</div>
+			</div>
+			<button type="submit" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">Submit</button>
+		</form>
+	</div>
 </div>
 <div class="container-fluid" id="catchem" role="main">
-
 	<script id="query-template" type="text/x-handlebars-template">
-<div class="row">
+	<div class="row">
 	{{#if loading}}
-  <div class="col-xs-12 text-center">
-    <h3>loading {{#each params}}{{name}}: {{value}}{{/each}}<br />
-		<span class="ldr"><i class="fa fa-cog fa-spin"></i></span></h3>
+	<div class="col-xs-12 text-center">
+	<h3>loading {{#each params}}{{name}}: {{value}}{{/each}}<br />
+	<span class="ldr"><i class="fa fa-cog fa-spin"></i></span></h3>
 	</div>
 	{{else}}
 	<div class="col-md-6">
-			{{#if imgsrc}}
-				{{#if url}}
-				<a href="{{url}}" target="_blank" rel="nofollow">
-					{{/if}}
-				<img src="{{imgsrc}}" class="img-responsive img-thumbnail" />
-					{{#if url}}
-				</a>
-						{{/if}}
+	{{#if imgsrc}}
+		{{#if url}}
+		<a href="{{url}}" target="_blank" rel="nofollow">
 			{{/if}}
-		</div>
-		<div class="col-md-6">
+		<img src="{{imgsrc}}" class="img-responsive img-thumbnail" />
 			{{#if url}}
-				<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}<small> <i class="fa fa-external-link"></i></small></a></h4>
-			{{/if}}
-			{{#if meta}}
-				<p>
-					Report Generated: {{meta.timestamp}}<br />
-					Page Title: {{meta.title}}<br />
-					{{#if meta.pageloadtime}}
-					Page Load Time: <abbr title="Load time may not be exact : compare to GTmetrix for a better approximation.">{{meta.pageloadtime}} seconds</abbr>
-					{{/if}}
-				</p>
-				<div class="panel panel-{{errorlevel}}">
-				<div class="panel-heading">Marketing Plumbing Checks {{#if errorcount}}<span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{else}}<span class="label label-success">Hooray!!</span>{{/if}}</div>
-				{{#if meta.resources.checks}}
-				<ul class="list-group">
-					{{#each meta.resources.checks}}
-					<li class="list-group-item">
-						{{#if value}}
-							<span class="label label-success"><i class="fa fa-check"></i></span> <strong>{{name}}</strong>: Found with ID = {{value}}
-						{{else}}
-						  <span class="label label-danger"><i class="fa fa-times"></i></span> <strong>{{name}}</strong>: Not found?
-					  {{/if}}
-					</li>
-					{{/each}}
-				</ul>
-				<!--div class="panel-footer"><em>Coming Soon: GA pageview &amp; ecommerce, Adroll, Google Remarketing, Optimizely, Criteo, and more!</em></div-->
-				{{else}}
-				<div class="panel-body">
-					<p>Oops? Something went wrong.</p>
-				</div>
+		</a>
 				{{/if}}
-				</div>
-				<div class="panel panel-info">
-				<div class="panel-heading">Links Found on the Page {{#if meta.links}}<abbr title="Click on a link below to analyze the marketing plumbing on that page next."><i class="fa fa-question-circle"></i></abbr>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</div>
-				{{#if meta.links}}
-				<div class="list-group page-links">
-					{{#each meta.links}}
-						<a href="{{this}}" class="list-group-item" title="Click to Analyze">{{this}}</a>
-					{{/each}}
-				</div>
-				{{else}}
-				<div class="panel-body">
-					<p>No links found.</p>
-			  </div>
-				{{/if}}
-			</div>
-			<div class="well">
-				<div class="pie-chart"></div>
-			</div>
-			{{else}}
-			<div class="panel panel-danger">
-				<div class="panel-heading">Marketing Plumbing Checks</div>
-				<div class="panel-body">
-					<p>Oops? Something went wrong.</p>
-				</div>
-			</div>
-			{{/if}}
-
-			{{#if url}}
-				<div class="panel panel-info">
-					<div class="panel-heading">Additional Resources</div>
-					<div class="panel-body">
-						<!-- <div class="btn-group" role="group"> -->
-							<a href="https://gtmetrix.com/?url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-clock-o"></i> GTmetrix</a>
-							<a href="https://developers.facebook.com/tools/debug/sharing/?q={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-facebook-official"></i> Sharing Debugger</a>
-							<a href="https://www.google.com/webmasters/tools/mobile-friendly/?url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-google"></i> Mobile-Friendly Test</a>
-							<a href="https://search.google.com/structured-data/testing-tool/u/0/#url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-google"></i> Structured Data Testing</a>
-					<!-- </div> -->
-					</div>
-				</div>
-			{{/if}}
+	{{/if}}
 	</div>
-  {{/if}}
-</div>
-<div class="row">
-<hr />
-</div>
+	<div class="col-md-6">
+	{{#if url}}
+		<h4>url: <a href="{{url}}" target="_blank" rel="nofollow">{{url}}<small> <i class="fa fa-external-link"></i></small></a></h4>
+	{{/if}}
+	{{#if meta}}
+		<p>
+			Report Generated: {{meta.timestamp}}<br />
+			Page Title: {{meta.title}}<br />
+			{{#if meta.pageloadtime}}
+			Page Load Time: <abbr title="Load time may not be exact : compare to GTmetrix for a better approximation.">{{meta.pageloadtime}} seconds</abbr>
+			{{/if}}
+		</p>
+		<div class="panel panel-{{errorlevel}}">
+		<div class="panel-heading">Marketing Plumbing Checks {{#if errorcount}}<span class="badge" title="{{errorcount}} issues found">{{errorcount}}</span>{{else}}<span class="label label-success">Hooray!!</span>{{/if}}</div>
+		{{#if meta.resources.checks}}
+		<ul class="list-group">
+			{{#each meta.resources.checks}}
+			<li class="list-group-item">
+				{{#if value}}
+					<span class="label label-success"><i class="fa fa-check"></i></span> <strong>{{name}}</strong>: Found with ID = {{value}}
+				{{else}}
+				  <span class="label label-danger"><i class="fa fa-times"></i></span> <strong>{{name}}</strong>: Not found?
+			  {{/if}}
+			</li>
+			{{/each}}
+		</ul>
+		<!--div class="panel-footer"><em>Coming Soon: GA pageview &amp; ecommerce, Adroll, Google Remarketing, Optimizely, Criteo, and more!</em></div-->
+		{{else}}
+		<div class="panel-body">
+			<p>Oops? Something went wrong.</p>
+		</div>
+		{{/if}}
+		</div>
+		<div class="panel panel-info">
+		<div class="panel-heading">Links Found on the Page {{#if meta.links}}<abbr title="Click on a link below to analyze the marketing plumbing on that page next."><i class="fa fa-question-circle"></i></abbr>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</div>
+		{{#if meta.links}}
+		<div class="list-group page-links">
+			{{#each meta.links}}
+				<a href="{{this}}" class="list-group-item" title="Click to Analyze">{{this}}</a>
+			{{/each}}
+		</div>
+		{{else}}
+		<div class="panel-body">
+			<p>No links found.</p>
+	  </div>
+		{{/if}}
+	</div>
+	<div class="well">
+		<div class="pie-chart"></div>
+	</div>
+	{{else}}
+	<div class="panel panel-danger">
+		<div class="panel-heading">Marketing Plumbing Checks</div>
+		<div class="panel-body">
+			<p>Oops? Something went wrong.</p>
+		</div>
+	</div>
+	{{/if}}
+
+	{{#if url}}
+		<div class="panel panel-info">
+			<div class="panel-heading">Additional Resources</div>
+			<div class="panel-body">
+				<!-- <div class="btn-group" role="group"> -->
+					<a href="https://gtmetrix.com/?url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-clock-o"></i> GTmetrix</a>
+					<a href="https://developers.facebook.com/tools/debug/sharing/?q={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-facebook-official"></i> Sharing Debugger</a>
+					<a href="https://www.google.com/webmasters/tools/mobile-friendly/?url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-google"></i> Mobile-Friendly Test</a>
+					<a href="https://search.google.com/structured-data/testing-tool/u/0/#url={{url}}" class="btn btn-default" target="_blank" rel="nofollow"><i class="fa fa-google"></i> Structured Data Testing</a>
+			<!-- </div> -->
+			</div>
+		</div>
+	{{/if}}
+	</div>
+	{{/if}}
+	</div>
+	<div class="row"><hr /></div>
 	</script>
 </div>
 <footer class="footer">
-  <div class="container">
-    <p class="text-muted">&copy; Copyright <span id="thisyear"></span> <a href="http://www.ninthlink.com/" target="_blank">Ninthlink, Inc.</a>  <a href="https://github.com/chousmith/nlkmpat" target="_blank" rel="nofollow" title="source on github"><i class="fa fa-github"></i></a></p>
-  </div>
+	<div class="container">
+	  <p class="text-muted">
+			&copy; Copyright <span id="thisyear"></span> <a href="http://www.ninthlink.com/" target="_blank">Ninthlink, Inc.</a>
+			<a href="https://github.com/chousmith/nlkmpat" target="_blank" rel="nofollow" title="source on github"><i class="fa fa-github"></i></a>
+		</p>
+	</div>
 </footer>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
-	<script type="text/javascript">
-		// quick heroku redirect too just because
-		if ( window.location.hostname == 'nlkmpat-dev.herokuapp.com' ) {
-			window.location.href = 'http://mpa-dev.ninthlink.agency';
-		}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+<script type="text/javascript">
+	// quick heroku redirect too just because
+	if ( window.location.hostname == 'nlkmpat-dev.herokuapp.com' ) {
+		window.location.href = 'http://mpa-dev.ninthlink.agency';
+	}
 
-		// quick sub footer year why not
-		$('#thisyear').html(function() {
-			var nowd = new Date();
-			return nowd.getFullYear();
-		});
+	// quick sub footer year why not
+	$('#thisyear').html(function() {
+		var nowd = new Date();
+		return nowd.getFullYear();
+	});
 
-		var template = Handlebars.compile($("#query-template").html());
+	var template = Handlebars.compile($("#query-template").html());
 
-		// gotcha - mongoose doesn't like a trailing 'utf8' on the content type
-		$.ajaxSetup({
-			contentType: 'application/x-www-form-urlencoded',
-			timeout: 30000
-		});
+	// gotcha - mongoose doesn't like a trailing 'utf8' on the content type
+	$.ajaxSetup({
+		contentType: 'application/x-www-form-urlencoded',
+		timeout: 30000
+	});
 
-		$('form').on( 'submit', function (e) {
-			// we don't want page reload so
-			e.preventDefault();
-			// but that means we break default tracking so also
-			window.dataLayer = window.dataLayer || [];
-		  window.dataLayer.push({
-		    'event' : 'formSubmissionSuccess'
-		  });
-			// and then the rest of our handler
-			if ( $('#url').val() !== '' ) {
-				// and then
-				var $form = $(this);
-				var params = $form.serializeArray();
-				var $btn = $form.find('button');
-				// make the Submit btn loading
-				$btn.button('loading');
-				// wipe out any "try again?" links?
-				$('.ldr a').remove();
+	$('form').on( 'submit', function (e) {
+		// we don't want page reload so
+		e.preventDefault();
+		// but that means we break default tracking so also
+		window.dataLayer = window.dataLayer || [];
+	  window.dataLayer.push({
+	    'event' : 'formSubmissionSuccess'
+	  });
+		// and then the rest of our handler
+		if ( $('#url').val() !== '' ) {
+			// and then
+			var $form = $(this);
+			var params = $form.serializeArray();
+			var $btn = $form.find('button');
+			// make the Submit btn loading
+			$btn.button('loading');
+			// wipe out any "try again?" links?
+			$('.ldr a').remove();
 
-				var data = {
-					params: params,
-				  loading: true
-				};
-				var $el = $('<div>').prependTo( $form.parent().parent().next() );
-				// console.log('loading initial template.. with data :');
+			var data = {
+				params: params,
+			  loading: true
+			};
+			var $el = $('<div>').prependTo( $form.parent().parent().next() );
+			// console.log('loading initial template.. with data :');
+			// console.log(data);
+			$el.html(template(data));
+
+			$.post( '', params )
+			.done( function ( response ) {
+				// success! parse the data better now :
+				// json and image split to lines (FF doesn't like image uris in json)
+				var parts = response.split("\n");
+				data.imgsrc = parts[1]
+				data.meta = $.parseJSON(parts[0]);
+
+				data.loading = false;
+				if ( params[0]['name'] == 'url' ) {
+					data.url = params[0]['value'];
+				} else {
+					data.url = '';
+				}
+
+				if ( data.meta.timestamp ) {
+					// format timestamp
+					var td = new Date( data.meta.timestamp );
+					// http://www.w3schools.com/jsref/jsref_tolocalestring.asp
+					data.meta.timestamp = td.toLocaleDateString() +' '+ td.toLocaleTimeString();
+				} else {
+					data.meta.timestamp = 'err';
+				}
+
+				// console.log('reload:');
 				// console.log(data);
+
+				// count our errors and output accordingly
+				data.errorcount = data.meta.resources.errors.length;
+				if ( data.errorcount == 0 ) {
+					data.errorlevel = 'primary'; //'success';
+				} else if ( data.errorcount < 4 ) {
+					// arbitrary point
+					data.errorlevel = 'warning';
+				} else {
+					data.errorlevel = 'danger';
+				}
+
+				// inject the handlebars template data
 				$el.html(template(data));
 
-				$.post( '', params )
-				.done( function ( response ) {
-					// success! parse the data better now :
-					// json and image split to lines (FF doesn't like image uris in json)
-					var parts = response.split("\n");
-					data.imgsrc = parts[1]
-					data.meta = $.parseJSON(parts[0]);
+				// draw the Links by area chart
+				if ( chartsLoaded ) {
 
-					data.loading = false;
-					if ( params[0]['name'] == 'url' ) {
-						data.url = params[0]['value'];
-					} else {
-						data.url = '';
-					}
+					data.meta.link_areas.unshift(['URL', 'Area']);
 
-					if ( data.meta.timestamp ) {
-						// format timestamp
-						var td = new Date( data.meta.timestamp );
-						// http://www.w3schools.com/jsref/jsref_tolocalestring.asp
-						data.meta.timestamp = td.toLocaleDateString() +' '+ td.toLocaleTimeString();
-					} else {
-						data.meta.timestamp = 'err';
-					}
+					// console.log('link areas to chart :');
+					// console.log(data.meta.link_areas);
 
-					// console.log('reload:');
-					// console.log(data);
+					var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
 
-					// count our errors and output accordingly
-					data.errorcount = data.meta.resources.errors.length;
-					if ( data.errorcount == 0 ) {
-						data.errorlevel = 'primary'; //'success';
-					} else if ( data.errorcount < 4 ) {
-						// arbitrary point
-						data.errorlevel = 'warning';
-					} else {
-						data.errorlevel = 'danger';
-					}
+					var options = {
+						title:"Links by area",
+						legend:{position:'none'},
+						pieSliceText:'none'
+					};
 
-					// inject the handlebars template data
-					$el.html(template(data));
+					var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
+					chart.draw(datatable, options);
 
-					// draw the Links by area chart
-					if ( chartsLoaded ) {
-
-						data.meta.link_areas.unshift(['URL', 'Area']);
-
-						// console.log('link areas to chart :');
-						// console.log(data.meta.link_areas);
-
-						var datatable = google.visualization.arrayToDataTable(data.meta.link_areas);
-
-						var options = {
-							title:"Links by area",
-							legend:{position:'none'},
-							pieSliceText:'none'
-						};
-
-						var chart = new google.visualization.PieChart($el.find('.pie-chart').get(0));
-						chart.draw(datatable, options);
-
-					}
-
-				}).fail( function ( data ) {
-					console.log( 'oops, something went wrong. Response:' );
-					console.log(data);
-					// replace cog spinner loader
-					var emsg = 'Oops! Something went wrong. ';
-					if ( data.statusText ) {
-						emsg += 'Response: '+ data.statusText;
-					}
-					emsg += '<br /><a href="#">try again?</a>';
-
-					$('.ldr:first').html( '<small>'+ emsg +'</small>' ).find('a')
-						.unbind( 'click' ).bind( 'click', function () {
-							$form.submit();
-							return false;
-						});
-				}).always( function ( data ) {
-					// either way we got a response, so revert the Loading btn
-					$btn.button( 'reset' );
-				});
-			}
-		}).submit();
-
-		$(document).on( 'click', 'a', function (e) {
-			// gtm
-			window.dataLayer = window.dataLayer || [];
-		  window.dataLayer.push({
-		    'event' : 'linkClicked'
-		  });
-			// and then
-			if ( $(this).hasClass( 'list-group-item' ) ) {
-				e.preventDefault();
-				if ( this.href.substr(0,4) == 'tel:' ) {
-					alert('oops! running on telephone numbers is not supported ... at this time?');
-				} else {
-					$('#url').val( this.href ).submit();
-					$('body').animate({ scrollTop: 0 });
 				}
+
+			}).fail( function ( data ) {
+				console.log( 'oops, something went wrong. Response:' );
+				console.log(data);
+				// replace cog spinner loader
+				var emsg = 'Oops! Something went wrong. ';
+				if ( data.statusText ) {
+					emsg += 'Response: '+ data.statusText;
+				}
+				emsg += '<br /><a href="#">try again?</a>';
+
+				$('.ldr:first').html( '<small>'+ emsg +'</small>' ).find('a')
+					.unbind( 'click' ).bind( 'click', function () {
+						$form.submit();
+						return false;
+					});
+			}).always( function ( data ) {
+				// either way we got a response, so revert the Loading btn
+				$btn.button( 'reset' );
+			});
+		}
+	}).submit();
+
+	$(document).on( 'click', 'a', function (e) {
+		// gtm
+		window.dataLayer = window.dataLayer || [];
+	  window.dataLayer.push({
+	    'event' : 'linkClicked'
+	  });
+		// and then
+		if ( $(this).hasClass( 'list-group-item' ) ) {
+			e.preventDefault();
+			if ( this.href.substr(0,4) == 'tel:' ) {
+				alert('oops! running on telephone numbers is not supported ... at this time?');
+			} else {
+				$('#url').val( this.href ).submit();
+				$('body').animate({ scrollTop: 0 });
 			}
-		});
-	</script>
+		}
+	});
+</script>
 
-
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-    	var chartsLoaded;
-		google.load( "visualization", "1", { packages: [ "corechart" ] });
-		google.setOnLoadCallback( function () {
-			chartsLoaded = true;
-		});
-    </script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  var chartsLoaded;
+	google.load( "visualization", "1", { packages: [ "corechart" ] });
+	google.setOnLoadCallback( function () {
+		chartsLoaded = true;
+	});
+</script>
 
 <!-- Google Tag Manager -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-K8V2PV"
