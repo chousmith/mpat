@@ -269,13 +269,12 @@ function request_page(url, callback){
 		                }
 		                // search each for an id
 		                var gtmd = resources_summary[i][1][s];
-										gtmd = gtmd.substr( gtmd.lastIndexOf('-') + 1 );
+										gtmd = 'GTM'+ gtmd.substr( gtmd.lastIndexOf('-') );
 		                // do we care about extra args there?
-		                console.log('Google Tag Manager found, with '+ gtmd );
+		                console.log('Google Tag Manager found, with Container ID = '+ gtmd );
 										resource_checks[0]['value'] = gtmd;
 		              }
 		            }
-		            //https://www.googletagmanager.com/gtm.js?id=GTM-PGQC7X
 		            break;
 		          case 'ga':
 		            if ( resources_summary[i][1].length == 0 ) {
