@@ -140,8 +140,7 @@ var service = server.listen(port, function(request, response) {
 if(service) console.log('server started - http://localhost:' + server.port);
 
 function request_page(url, plumbingDetails, emotionDetails, callback){
-	console.log('request_page: url = '+ url +' & plumbingDetails = '+ plumbingDetails +' & emotionDetails = '+ emotionDetails );
-
+	//console.log('request_page: url = '+ url +' & plumbingDetails = '+ plumbingDetails +' & emotionDetails = '+ emotionDetails );
 	var page = new WebPage();
 	page.clipRect = { top: 0, left: 0, width: 1015, height: 580 };
 	page.viewportSize = { width: 1015, height: 580 };

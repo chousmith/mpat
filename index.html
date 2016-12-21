@@ -56,7 +56,7 @@
 	<div class="row">
 	{{#if loading}}
 	<div class="col-xs-12 text-center">
-	<h3>loading {{#each params}}{{name}}: {{value}}{{/each}}<br />
+	<h3>loading url: {{url}}<br />
 	<span class="ldr"><i class="fa fa-cog fa-spin"></i></span></h3>
 	</div>
 	{{else}}
@@ -217,7 +217,7 @@
 
 				//console.log('params:');
 				//console.log(params);
-				
+
 				var $btn = $form.find('button');
 				// make the Submit btn loading
 				$btn.button('loading');
@@ -226,6 +226,7 @@
 
 				var data = {
 					params: params,
+					url: params[0]['value'],
 				  loading: true
 				};
 				var $el = $('<div>').prependTo( $form.parent().parent().next() );
