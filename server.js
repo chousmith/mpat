@@ -101,8 +101,16 @@ var service = server.listen(port, function(request, response) {
 		if ( request.post.sh ) {
 			screen_height = parseInt( request.post.sh, 10 );
 		}
+		var p_height = PAGE_HEIGHT;
+		if ( request.post.ph ) {
+			p_height = parseInt( request.post.ph, 10 );
+			// double check
+			if ( p_height < screen_height ) {
+				p_height = screen_height;
+			}
+		}
 
-		request_page( url, plumbingDetails, emotionDetails, screen_width, screen_height, function ( properties, imageuri ) {
+		request_page( url, plumbingDetails, emotionDetails, screen_width, screen_height, p_height, function ( properties, imageuri ) {
 			response.statusCode = 200;
 			if ( plumbingDetails === true ) {
 				response.write( JSON.stringify( properties ) );
@@ -151,11 +159,11 @@ var service = server.listen(port, function(request, response) {
 
 if(service) console.log('server started - http://localhost:' + server.port);
 
-function request_page(url, plumbingDetails, emotionDetails, screen_width, screen_height, callback){
+function request_page(url, plumbingDetails, emotionDetails, screen_width, screen_height, p_height, callback){
 	//console.log('request_page: url = '+ url +' & plumbingDetails = '+ plumbingDetails +' & emotionDetails = '+ emotionDetails );
 	var page = new WebPage();
 	page.clipRect = { top: 0, left: 0, width: screen_width, height: screen_height };
-	page.viewportSize = { width: screen_width, height: screen_height };
+	page.viewportSize = { width: screen_width, height: p_height };
 
 	// cache the current timestamp for time tracking fun
 	var t = Date.now();
