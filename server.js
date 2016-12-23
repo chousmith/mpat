@@ -5,6 +5,10 @@ var server = require('webserver').create(),
 	fs     = require('fs'),
 	port   = system.env.PORT || 8080,
 	firedonce = false,
+	// default screenshot page render sizes
+	PAGE_WIDTH = 1015,
+	PAGE_HEIGHT = 580,
+	// default buffer times
 	NODETAIL_BUFFER_TIME = 100,
 	DETAILED_BUFFER_TIME = 3000,
 	// how long after page "load" to output our summary?
@@ -89,8 +93,16 @@ var service = server.listen(port, function(request, response) {
 				emotionDetails = true;
 			}
 		}
+		var screen_width = PAGE_WIDTH;
+		if ( request.post.sw ) {
+			screen_width = parseInt( request.post.sw, 10 );
+		}
+		var screen_height = PAGE_HEIGHT;
+		if ( request.post.sh ) {
+			screen_height = parseInt( request.post.sh, 10 );
+		}
 
-		request_page( url, plumbingDetails, emotionDetails, function ( properties, imageuri ) {
+		request_page( url, plumbingDetails, emotionDetails, screen_width, screen_height, function ( properties, imageuri ) {
 			response.statusCode = 200;
 			if ( plumbingDetails === true ) {
 				response.write( JSON.stringify( properties ) );
@@ -139,11 +151,11 @@ var service = server.listen(port, function(request, response) {
 
 if(service) console.log('server started - http://localhost:' + server.port);
 
-function request_page(url, plumbingDetails, emotionDetails, callback){
+function request_page(url, plumbingDetails, emotionDetails, screen_width, screen_height, callback){
 	//console.log('request_page: url = '+ url +' & plumbingDetails = '+ plumbingDetails +' & emotionDetails = '+ emotionDetails );
 	var page = new WebPage();
-	page.clipRect = { top: 0, left: 0, width: 1015, height: 580 };
-	page.viewportSize = { width: 1015, height: 580 };
+	page.clipRect = { top: 0, left: 0, width: screen_width, height: screen_height };
+	page.viewportSize = { width: screen_width, height: screen_height };
 
 	// cache the current timestamp for time tracking fun
 	var t = Date.now();
