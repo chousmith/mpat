@@ -9,7 +9,7 @@ var server = require('webserver').create(),
 	PAGE_WIDTH = 1015,
 	PAGE_HEIGHT = 580,
 	// default buffer times
-	NODETAIL_BUFFER_TIME = 100,
+	NODETAIL_BUFFER_TIME = 2000,
 	DETAILED_BUFFER_TIME = 3000,
 	// how long after page "load" to output our summary?
 	BUFFER_TIME = 3000,
