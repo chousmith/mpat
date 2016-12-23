@@ -162,8 +162,8 @@ if(service) console.log('server started - http://localhost:' + server.port);
 function request_page(url, plumbingDetails, emotionDetails, screen_width, screen_height, p_height, callback){
 	//console.log('request_page: url = '+ url +' & plumbingDetails = '+ plumbingDetails +' & emotionDetails = '+ emotionDetails );
 	var page = new WebPage();
-	page.clipRect = { top: 0, left: 0, width: screen_width, height: screen_height };
-	page.viewportSize = { width: screen_width, height: p_height };
+	page.clipRect = { top: 0, left: 0, width: screen_width, height: p_height };
+	page.viewportSize = { width: screen_width, height: screen_height };
 
 	// cache the current timestamp for time tracking fun
 	var t = Date.now();
