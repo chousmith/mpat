@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Marketing Plumming</title>
+	<title>Plumming : Marketing Plumbing Analysis Tool</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -12,38 +12,41 @@
 	<style type="text/css">
 	/* Sticky footer styles */
 	html {
-	  position: relative;
-	  min-height: 100%;
+		position: relative;
+		min-height: 100%;
 	}
 	body {
-	  /* Margin bottom by footer height */
-	  margin-bottom: 60px;
+		/* Margin bottom by footer height */
+		margin-bottom: 60px;
 	}
 	.footer {
 		background-color: #f5f5f5;
 		padding-top: 20px;
-	  position: absolute;
-	  bottom: 0;
-	  width: 100%;
-	  height: 60px;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 60px;
 	}
-	/* and one more quick fix */
+	/* couple more quick fixes */
 	a.list-group-item {
 		word-break: break-word;
+	}
+	.input-group-addon label {
+		margin-bottom: 0;
 	}
 	</style>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
 	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div class="jumbotron">
-		<h1>Marketing Plumming</h1>
+		<h1>Plumming</h1>
 		<p>Enter a URL below to analyze the &ldquo;Marketing Plumbing&rdquo;</p>
 		<form method="post" class="form-inline">
 			<div class="form-group">
 				<label class="sr-only" for="url">Enter a URL here</label>
 				<div class="input-group">
-					<div class="input-group-addon"><i class="fa fa-globe"></i></div>
+					<div class="input-group-addon"><label for="url"><i class="fa fa-globe" title="URL"></i></label></div>
 					<input type="url" name="url" class="form-control" id="url" value="" placeholder="Enter a URL here" size="70" required tabindex=1>
 				</div>
 			</div>
