@@ -1,4 +1,4 @@
-marketing plumbing analysis tool (mpat)
+Plumming : marketing plumbing analysis tool
 ====================================================
 
 Analyze the marketing plumbing of a URL using phantomjs webserver module. Originally based off of https://github.com/benfoxall/phantomjs-webserver-example
@@ -7,9 +7,9 @@ Analyze the marketing plumbing of a URL using phantomjs webserver module. Origin
 
 ### Heroku
 
-http://mpat-dev.herokuapp.com/
+http://plumming-dev.herokuapp.com/
 
-![heroku screenshot](https://raw.github.com/chousmith/mpat/master/screenshot.png)
+![heroku screenshot](https://raw.github.com/chousmith/plumming/master/screenshot.png)
 
 ### Command line via phantomjs
 
